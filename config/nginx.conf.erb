@@ -10,9 +10,9 @@ http {
   error_log stderr;
   access_log /dev/stdout;
 
-  # --- FIX: Point to the correct mime.types file path ---
-  include       config/mime.types;
-  # ---------------------------------------------------
+  # --- FIX: Correct path to mime.types (it's in the same folder) ---
+  include       mime.types;
+  # -------------------------------------------------------------
 
   default_type  application/octet-stream;
   sendfile      on;
@@ -30,9 +30,8 @@ http {
       # Use ni-demo.html as the default file
       index ni-demo.html;
       
-      # --- FIX: Remove debug line ---
+      # Turn off directory listing
       autoindex off; 
-      # ------------------------------
     }
   }
 }
