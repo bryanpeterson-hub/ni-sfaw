@@ -1,17 +1,17 @@
 worker_processes 1;
 daemon off; # Run in the foreground
 
-# --- ADD THESE TWO LINES ---
-# Redirect all logs to Heroku's log stream
-error_log stderr;
-access_log /dev/stdout;
-# ---------------------------
-
 events {
   worker_connections 1024;
 }
 
 http {
+  # --- LOGGING LINES MOVED HERE ---
+  # Redirect all logs to Heroku's log stream
+  error_log stderr;
+  access_log /dev/stdout;
+  # --------------------------------
+
   include       mime.types;
   default_type  application/octet-stream;
   sendfile      on;
