@@ -1,1 +1,1 @@
-web: bin/nginx-wrapper
+web: bin/start-nginx
