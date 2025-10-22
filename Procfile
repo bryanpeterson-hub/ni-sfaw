@@ -1,1 +1,1 @@
-web: bin/nginx -g 'daemon off;'
+web: bin/nginx-wrapper
