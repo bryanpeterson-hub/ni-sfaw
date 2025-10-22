@@ -77,7 +77,7 @@
             color: white;
         }
         
-        /* Pulsing button (Copied for style consistency, but not used on this page) */
+        /* Pulsing button */
         .pulse-button {
             box-shadow: 0 0 0 0 rgba(0, 155, 101, 0.7);
             animation: pulse 1.5s infinite;
@@ -92,6 +92,20 @@
             100% {
                 box-shadow: 0 0 0 0 rgba(0, 155, 101, 0);
             }
+        }
+
+        /* Tab styles for Vision Zero section */
+        .tab {
+            @apply px-6 py-3 font-medium text-lg border-b-4 border-transparent cursor-pointer;
+            color: #666; /* Default tab color */
+        }
+        .tab-active {
+            color: var(--ni-blue); /* Active tab color */
+            border-color: var(--ni-blue); /* Active tab underline */
+        }
+        .tab:hover {
+             color: var(--ni-blue);
+             border-color: var(--ni-blue);
         }
     </style>
 </head>
@@ -141,13 +155,13 @@
     </header>
 
     <!--
-      PAGE CONTENT: Replicated from transportation.html
+      PAGE CONTENT: Replicated from transportation.html with updates
     -->
     <main>
         <!-- Hero Section -->
         <section class="relative bg-white text-center">
-            <!-- Background Image -->
-            <img src="https://placehold.co/1600x600/044123/32EB96?text=Transportation+Hero" alt="Transportation Hero" class="w-full h-[500px] object-cover">
+            <!-- Background Image - Updated -->
+            <img src="https://ni.scene7.com/is/image/ni/AdobeStock_383858917_1440x659?scl=1" alt="Transportation Hero" class="w-full h-[500px] object-cover">
             
             <!-- Overlay Content -->
             <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-30 p-8">
@@ -160,6 +174,45 @@
                 <a href="#" class="ni-bg-green text-white font-bold py-3 px-8 rounded-full text-lg hover:opacity-90 transition-opacity">
                     Explore Solutions
                 </a>
+            </div>
+        </section>
+
+        <!-- NEW: Vision Zero Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-6 lg:px-8">
+                <!-- Title and Subtitle -->
+                <div class="text-center mb-12 max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-bold mb-4">Accelerate the Path to Vision Zero</h2>
+                    <p class="text-lg text-gray-700">
+                        Together, we can create a more sustainable future for mobility—without shortcuts. NI can help you ensure quality and accelerate time to market. Let’s turn test into your enabler of performance and strategic advantage.
+                    </p>
+                </div>
+                
+                <!-- Tabs -->
+                <div class="flex justify-center border-b border-gray-200 mb-16">
+                    <button class="tab tab-active">Overview</button>
+                    <button class="tab">Solutions</button>
+                    <button class="tab">Industry Trends</button>
+                    <button class="tab">Collaboration</button>
+                    <button class="tab">Services</button>
+                </div>
+
+                <!-- Content Block (Image + Text) -->
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/2">
+                        <!-- Placeholder for the semi-circle image effect -->
+                        <div class="relative w-full aspect-square max-w-lg mx-auto">
+                             <img src="https://placehold.co/600x600/CCCCCC/333333?text=Vision+Zero+Image" alt="Man in car with green overlay" class="rounded-lg shadow-lg">
+                             <!-- This would typically involve more complex SVG or positioning for the circle -->
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                         <h3 class="text-3xl font-bold mb-4">A Better Way to Vision Zero</h3>
+                         <p class="text-lg text-gray-700">
+                             Using our automotive test systems, we create a common digital thread of data across the product life cycle to deliver analytics and insights that help you optimize performance—getting you to market faster while ensuring quality.
+                         </p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -204,46 +257,7 @@
             </div>
         </section>
 
-        <!-- Aerospace and Defense Test Solutions Section -->
-        <section class="py-16 bg-white">
-            <div class="container mx-auto px-6 lg:px-8">
-                <h2 class="text-3xl font-bold text-center mb-12">Aerospace and Defense Test Solutions</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Solution 1 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-3">Avionics and Control Systems</h3>
-                            <p class="text-gray-600 mb-4">Test LRUs, ensure FADEC reliability, and accelerate HIL testing.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
-                        </div>
-                    </div>
-                    <!-- Solution 2 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-3">Structural Test</h3>
-                            <p class="text-gray-600 mb-4">Perform static, dynamic, and fatigue tests on aerostructures.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
-                        </div>
-                    </div>
-                    <!-- Solution 3 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-3">Electric Propulsion</h3>
-                            <p class="text-gray-600 mb-4">Test the future of aerospace with high-voltage electric systems.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
-                        </div>
-                    </div>
-                    <!-- Solution 4 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-3">Space Systems</h3>
-                            <p class="text-gray-600 mb-4">Test satellites, launch vehicles, and ground support systems.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- REMOVED: Aerospace and Defense Test Solutions Section -->
         
         <!-- Case Study Section (Same as ni-demo.html) -->
         <section class="py-16 ni-bg-light-gray">
@@ -382,8 +396,336 @@
             </div>
         </div>
     </footer>
-    
-    <!-- No demo javascript is needed for this static page -->
+
+    <!-- ADDED: Agentic Initiation Component -->
+    <div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50">
+        <button onclick="startDemo()" class="pulse-button ni-bg-finder-green text-white font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center">
+            <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            NI Solution Finder
+        </button>
+    </div>
+
+    <!-- ADDED: Main Demo Container -->
+    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100]">
+        <div class="flex h-full w-full items-center justify-center p-4">
+            <div class="flex flex-col md:flex-row h-[90vh] w-full max-w-6xl bg-white rounded-xl shadow-2xl overflow-hidden relative">
+                
+                <!-- Left: Chat Panel -->
+                <div class="w-full md:w-2/5 border-r border-gray-200 flex flex-col h-full">
+                    <div class="p-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold ni-text-blue">NI Solution Finder</h2>
+                        <p class="text-sm text-gray-600">Powered by NI-Trained Agent</p>
+                    </div>
+                    
+                    <!-- Chat Messages -->
+                    <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
+                        <!-- Messages will be injected here by JS -->
+                    </div>
+                    
+                    <!-- Chat Options -->
+                    <div id="chat-options" class="p-4 bg-gray-50 border-t border-gray-200 flex flex-wrap justify-center">
+                        <!-- Options will be injected here by JS -->
+                    </div>
+                </div>
+
+                <!-- Right: Agentic Content Zone -->
+                <div class="w-full md:w-3/5 h-full overflow-y-auto">
+                    <div id="content-zone" class="p-6 sm:p-10">
+                        <!-- Content will be injected here by JS -->
+                    </div>
+                </div>
+                
+                <!-- Close Button -->
+                <button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black z-10">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ADDED: Demo Javascript -->
+    <script>
+        // --- Demo State Management ---
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.getElementById('chat-options');
+        const contentZone = document.getElementById('content-zone');
+        // Note: heroHeadline and heroSubhead are not used on this page
+        // const heroHeadline = document.getElementById('hero-headline'); 
+        // const heroSubhead = document.getElementById('hero-subhead');
+
+        // --- Content Templates (Copied from ni-demo.html, might need adjustments based on this page's context if demo changes) ---
+
+        function renderWelcomeContent() {
+            // This welcome message might need updating for the context of the Transportation page
+            return `
+                <div class="animate-fade-in">
+                    <h2 class="text-2xl font-bold ni-text-blue mb-4">Welcome, Raj.</h2>
+                    <p class="text-lg text-gray-700 mb-6">Based on your interest in Transportation Test, I can help you find relevant solutions.</p>
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">How I can help:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li>Identify specific Automotive or Aerospace solutions</li>
+                            <li>Recommend compatible products (PXI, LabVIEW)</li>
+                            <li>Find application notes and case studies</li>
+                            <li>Connect you with a sales engineer</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProductCard(product) {
+            // Using the same product cards for simplicity, but could be different for this page
+            const products = {
+                cycler: {
+                    title: 'HV-1200 Battery Cycler',
+                    img: 'https://placehold.co/400x200/003c71/9fcd3a?text=HV-1200+Cycler',
+                    specs: [
+                        { label: 'Voltage', value: 'Up to 1200 V' },
+                        { label: 'Current', value: 'Up to 600 A' },
+                        { label: 'Channels', value: '1-4 per module' }
+                    ],
+                    desc: 'A high-power, regenerative cycler for validating high-voltage battery packs.'
+                },
+                labview: {
+                    title: 'LabVIEW + BTS Software',
+                    img: 'https://placehold.co/400x200/003c71/9fcd3a?text=LabVIEW+BTS',
+                    specs: [
+                        { label: 'Control', value: 'Full hardware automation' },
+                        { label: 'Test Steps', value: 'Pre-built sequences' },
+                        { label: 'Data', value: 'Integrated data logging' }
+                    ],
+                    desc: 'The software add-on for controlling hardware and automating lifecycle test sequences.'
+                }
+            };
+            
+            const p = products[product];
+            if (!p) return '';
+
+            return `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 animate-fade-in mb-6">
+                    <img src="${p.img}" alt="${p.title}" class="w-full h-40 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold ni-text-blue mb-3">${p.title}</h3>
+                        <p class="text-gray-600 mb-4">${p.desc}</p>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            ${p.specs.map(spec => `
+                                <div>
+                                    <span class="text-sm text-gray-500">${spec.label}</span>
+                                    <p class="text-md font-semibold text-gray-900">${spec.value}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderMeetingForm() {
+            // Same meeting form as ni-demo.html
+             return `
+                <div class="animate-fade-in">
+                    <h2 class="text-2xl font-bold ni-text-blue mb-4">Schedule Consultation</h2>
+                    <p class="text-gray-700 mb-6">Please confirm your details to book a 15-minute call with a technical sales engineer.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="name" value="Raj Singh" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="email" value="raj.singh@tier1-auto.com" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
+                        </div>
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                            <input type="text" id="company" value="Tier 1 Automotive Supplier" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
+                        </div>
+                        <!-- Fake calendar slot -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                            <p class="font-semibold text-blue-800">Selected Time:</p>
+                            <p class="text-blue-700">Tomorrow, October 23rd @ 10:30 AM CDT</p>
+                        </div>
+                        <button onclick="handleOption(8)" class="w-full ni-bg-green text-white font-bold py-3 px-4 rounded-lg shadow-md hover:opacity-90 transition-opacity">
+                            Confirm Meeting
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Demo Flow Logic (Copied from ni-demo.html) ---
+        
+        function startDemo() {
+            // Show the modal over the current page
+            document.getElementById('solution-finder-trigger').classList.add('hidden');
+            document.getElementById('demo-container').classList.remove('hidden');
+            
+            runStep(1); // Start the demo flow
+        }
+        
+        function resetDemo() {
+            // Hide the modal and show the button again
+            document.getElementById('demo-container').classList.add('hidden');
+            document.getElementById('solution-finder-trigger').classList.remove('hidden');
+            
+            // Clear the demo state
+            chatMessages.innerHTML = '';
+            chatOptions.innerHTML = '';
+            contentZone.innerHTML = '';
+            
+            // No hero personalization to reset on this page
+        }
+
+        function addAgentMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-agent';
+            msg.innerHTML = text;
+            chatMessages.appendChild(msg);
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-user';
+            msg.innerHTML = text;
+            chatMessages.appendChild(msg);
+            scrollToBottom();
+        }
+
+        function showOptions(options) {
+            chatOptions.innerHTML = ''; // Clear old options
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-option';
+                btn.innerHTML = option.text;
+                btn.onclick = () => handleOption(option.nextStep);
+                chatOptions.appendChild(btn);
+            });
+        }
+        
+        function handleOption(nextStep) {
+            // Get the text of the button that was clicked
+            const userText = event.target.innerHTML;
+            addUserMessage(userText);
+            
+            // Disable options after selection
+            chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
+            
+            // Run the next step after a short delay
+            setTimeout(() => {
+                runStep(nextStep);
+            }, 1200);
+        }
+        
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // The main demo "script" (Same as ni-demo.html for now)
+        function runStep(step) {
+            switch (step) {
+                case 1: // Agent Intro
+                    // Adjusted intro message slightly for transportation context
+                    addAgentMessage("Hi! I see you're exploring our Transportation solutions. I'm an NI-trained agent and can help you find what you need.");
+                    contentZone.innerHTML = renderWelcomeContent(); // Welcome content might need slight adjustment
+                    
+                    setTimeout(() => {
+                        addAgentMessage("Are you primarily interested in Automotive or Aerospace & Defense?");
+                        showOptions([
+                            { text: 'Automotive', nextStep: 2 }, // Keep flow simple, map both to step 2
+                            { text: 'Aerospace & Defense', nextStep: 2 } 
+                        ]);
+                    }, 1500);
+                    break;
+                
+                case 2: // User chooses Automotive (or A&D) -> Agent responds
+                     addAgentMessage("Understood. We have strong capabilities in that area. Our PXI-based systems are widely used.");
+                    
+                    setTimeout(() => {
+                        // Demo focuses on EV, so keep the next step the same regardless of initial choice
+                        addAgentMessage("A common challenge is EV Battery Lifecycle testing. Would you like to see specs for our <strong>High-Voltage Battery Cycler</strong>, or an <strong>application note</strong> on 'Simulating Driving Profiles'?");
+                        showOptions([
+                            { text: 'Show Cycler Specs', nextStep: 3 },
+                            { text: 'Show Application Note', nextStep: 3 } // Could branch here for a more complex demo
+                        ]);
+                    }, 1500);
+                    break;
+                    
+                case 3: // User chooses "Show Cycler Specs" -> Agent delivers content
+                    addAgentMessage("Here are the key specifications for the HV-1200 Battery Cycler. I've populated the content panel on your right with more details.");
+                    contentZone.innerHTML = renderProductCard('cycler');
+                    
+                    setTimeout(() => {
+                        showOptions([
+                            { text: 'What software do I use for this?', nextStep: 4 }
+                        ]);
+                    }, 2000);
+                    break;
+                
+                case 4: // User asks about software -> Agent delivers content
+                    addAgentMessage("Great question. Most engineers pair this hardware with our <strong>LabVIEW</strong> software and the <strong>Battery Test System (BTS) Software Add-On</strong>.");
+                    
+                    setTimeout(() => {
+                        addAgentMessage("It provides pre-built test sequences and simplifies data logging. I've added the software details to your content panel.");
+                        contentZone.innerHTML += renderProductCard('labview');
+                    }, 1500);
+                    
+                    setTimeout(() => {
+                        showOptions([
+                            { text: 'This is complex, I need to talk to someone.', nextStep: 5 }
+                        ]);
+                    }, 3000);
+                    break;
+                    
+                case 5: // User asks for sales -> Agent shows calendar
+                    addAgentMessage("I can help with that. Connecting you with a technical sales engineer is the best next step.");
+                    
+                    setTimeout(() => {
+                        addAgentMessage("Would you like to schedule a 15-minute virtual consultation now?");
+                        contentZone.innerHTML = renderMeetingForm();
+                        chatOptions.innerHTML = ''; 
+                    }, 1500);
+                    break;
+                    
+                case 8: // User "clicks" confirm in the form
+                    addUserMessage("<em>[Confirmed Meeting Details]</em>");
+                    addAgentMessage("Your consultation is confirmed! A calendar invite has been sent to <strong>raj.singh@tier1-auto.com</strong>.");
+                    contentZone.innerHTML = `
+                        <div class="text-center p-10 animate-fade-in">
+                            <svg class="h-16 w-16 ni-text-green mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <h2 class="text-2xl font-bold ni-text-blue mb-2">Thank You!</h2>
+                            <p class="text-lg text-gray-700">Your meeting is set. All of our conversation notes and the products we discussed have been sent to the sales engineer.</p>
+                        </div>
+                    `;
+                    
+                    setTimeout(() => {
+                        addAgentMessage("When you return to ni.com, I'll remember where we left off. You can click the 'X' to close this window.");
+                        chatOptions.innerHTML = '<button onclick="resetDemo()" class="chat-option bg-gray-200">Reset Demo</button>';
+                    }, 1500);
+                    break;
+            }
+        }
+        
+        // Add a class for fade-in animation
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-out;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        
+        // No initializePersonalization needed for this page
+        // document.addEventListener('DOMContentLoaded', initializePersonalization);
+        
+    </script>
 
 </body>
 </html>
+
