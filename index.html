@@ -12,7 +12,7 @@
         :root {
             --ni-blue: #03b584;
             --ni-green: #9fcd3a;
-            --ni-dark-blue: #002f5a;
+            --ni-dark-blue: #03b584; /* Updated color */
             --ni-light-gray: #f8f9fa;
         }
         body {
@@ -32,7 +32,8 @@
 
         /* Header link style */
         .header-link {
-            @apply py-6 border-b-4 border-transparent text-gray-700 font-medium;
+            /* Updated text-gray-700 to ni-text-blue */
+            @apply py-6 border-b-4 border-transparent ni-text-blue font-medium; 
             @apply hover:border-b-4 hover:border-ni-green hover:text-black;
         }
         
@@ -684,5 +685,4 @@
     </script>
 </body>
 </html>
-
 
