@@ -1,495 +1,479 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.1">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NI Adaptive Website Demo</title>
+    <!-- Using Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom NI colors */
+        :root {
+            --ni-blue: #003c71;
+            --ni-green: #9fcd3a;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .ni-bg-blue { background-color: var(--ni-blue); }
+        .ni-bg-green { background-color: var(--ni-green); }
+        .ni-text-green { color: var(--ni-green); }
+        .ni-border-green { border-color: var(--ni-green); }
+        
+        /* Chat bubble styles */
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        .chat-bubble-agent {
+            background-color: #f0f4f8;
+            color: #1a202c;
+            border-bottom-left-radius: 0.25rem;
+            align-self: flex-start;
+        }
+        .chat-bubble-user {
+            background-color: var(--ni-blue);
+            color: white;
+            border-bottom-right-radius: 0.25rem;
+            align-self: flex-end;
+        }
+        
+        /* Chat options button styles */
+        .chat-option {
+            background-color: white;
+            border: 1px solid var(--ni-blue);
+            color: var(--ni-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            margin: 0.25rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .chat-option:hover {
+            background-color: var(--ni-blue);
+            color: white;
+        }
+        
+        /* Pulsing button */
+        .pulse-button {
+            box-shadow: 0 0 0 0 rgba(159, 205, 58, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(159, 205, 58, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(159, 205, 58, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(159, 205, 58, 0);
+            }
+        }
+    </style>
 </head>
-<body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;NI Adaptive Website Demo&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Using Tailwind CSS for styling --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Custom NI colors */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--ni-blue: #003c71;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--ni-green: #9fcd3a;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.ni-bg-blue { background-color: var(--ni-blue); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.ni-bg-green { background-color: var(--ni-green); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.ni-text-green { color: var(--ni-green); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.ni-border-green { border-color: var(--ni-green); }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Chat bubble styles */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chat-bubble {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 80%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0.75rem 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.4;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chat-bubble-agent {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f4f8;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #1a202c;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom-left-radius: 0.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-self: flex-start;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chat-bubble-user {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--ni-blue);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom-right-radius: 0.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-self: flex-end;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Chat options button styles */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chat-option {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--ni-blue);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--ni-blue);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0.5rem 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 9999px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chat-option:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--ni-blue);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Pulsing button */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.pulse-button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 0 0 rgba(159, 205, 58, 0.7);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: pulse 1.5s infinite;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes pulse {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>0% {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>box-shadow: 0 0 0 0 rgba(159, 205, 58, 0.7);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>70% {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>box-shadow: 0 0 0 12px rgba(159, 205, 58, 0);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>100% {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>box-shadow: 0 0 0 0 rgba(159, 205, 58, 0);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body class="bg-gray-100"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!--<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>HEADER: Fake NI Navigation Bar</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="bg-white shadow-md sticky top-0 z-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav class="container mx-auto px-4 sm:px-6 lg:px-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex justify-between items-center h-16"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Logo --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex-shrink-0 flex items-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;svg class="h-8 w-auto" viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;path fill-rule="evenodd" clip-rule="evenodd" d="M37.701 100V0H0V100H37.701ZM14.138 86.862V13.138H23.563V86.862H14.138Z" fill="#003C71"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;path d="M54.1378 100V0H91.8388V13.1379H68.2758V43.431H91.8388V56.569H68.2758V86.8621H91.8388V100H54.1378Z" fill="#003C71"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;path fill-rule="evenodd" clip-rule="evenodd" d="M110.05 0H147.751V100H110.05V0ZM124.188 13.1379V86.8621H133.613V13.1379H124.188Z" fill="#003C71"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;path d="M211.53 79.549L230.379 0H245.516L218.421 100H198.549L171.454 0H186.591L205.44 79.549H211.53Z" fill="#003C71"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;path d="M261.942 100V0H300.731C322.459 0 339.297 16.838 339.297 38.5659V61.4341C339.297 83.162 322.459 100 300.731 100H261.942ZM276.08 13.1379V86.8621H300.731C314.545 86.8621 325.16 76.2478 325.16 61.4341V38.5659C325.16 23.7522 314.545 13.1379 300.731 13.1379H276.08Z" fill="#003C71"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Nav Links (Fake) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="hidden sm:flex sm:space-x-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#" class="font-medium text-gray-900"&gt;Solutions&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#" class="font-medium text-gray-500 hover:text-gray-900"&gt;Products&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#" class="font-medium text-gray-500 hover:text-gray-900"&gt;Industries&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#" class="font-medium text-gray-500 hover:text-gray-900"&gt;Support&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!--<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>STEP 1 &amp; 2: Initial Personalized Homepage<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>This is shown on load. It's already personalized for "Raj".</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;main id="step1-content" class="container mx-auto p-4 sm:p-6 lg:p-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Hero Section --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bg-white rounded-lg shadow-xl overflow-hidden mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="p-8 sm:p-12"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 class="text-3xl sm:text-4xl font-bold ni-text-blue mb-4"&gt;Accelerate Your EV Battery Validation&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-lg text-gray-700"&gt;Design and deploy comprehensive test systems for every stage of the battery lifecycle, from R&amp;D to production.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Featured Content Grid --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Featured Products (Personalized) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white rounded-lg shadow-lg overflow-hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-xl font-semibold ni-text-blue mb-3"&gt;Featured Products&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul class="space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-center text-gray-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg class="h-5 w-5 ni-text-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>PXI Hardware Platform</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-center text-gray-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg class="h-5 w-5 ni-text-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>High-Voltage Battery Cyclers</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-center text-gray-800"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg class="h-5 w-5 ni-text-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>Battery Test System (BTS)</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Case Study (Personalized) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white rounded-lg shadow-lg overflow-hidden md:col-span-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-xl font-semibold ni-text-blue mb-3"&gt;Customer Success Story&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="https://placehold.co/600x200/003c71/9fcd3a?text=Major+Auto+OEM+Validates+EV+Packs" alt="Automotive OEM" class="w-full h-32 object-cover rounded mb-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-medium text-gray-900"&gt;How a Major Auto OEM Validates Battery Packs with NI&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-600 mt-2"&gt;See how our PXI-based systems helped a leading automaker reduce battery test time by 30%.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!--<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>STEP 3: Agentic Initiation Component</p>
-<p class="p1"><span class="Apple-converted-space">      </span>A pulsing button that starts the demo.</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="startDemo()" class="pulse-button ni-bg-green text-black font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>NI Solution Finder</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!--<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>STEP 4-8: Main Demo Container</p>
-<p class="p1"><span class="Apple-converted-space">      </span>This is hidden by default and appears when the demo starts.</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="flex h-full w-full items-center justify-center p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex flex-col md:flex-row h-[90vh] w-full max-w-6xl bg-white rounded-xl shadow-2xl overflow-hidden"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Left: Chat Panel --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="w-full md:w-2/5 border-r border-gray-200 flex flex-col h-full"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-4 border-b border-gray-200"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h2 class="text-xl font-semibold ni-text-blue"&gt;NI Solution Finder&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm text-gray-600"&gt;Powered by NI-Trained Agent&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Chat Messages --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;!-- Messages will be injected here by JS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Chat Options --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="chat-options" class="p-4 bg-gray-50 border-t border-gray-200 flex flex-wrap justify-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;!-- Options will be injected here by JS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Right: Agentic Content Zone --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="w-full md:w-3/5 h-full overflow-y-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="content-zone" class="p-6 sm:p-10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;!-- Content will be injected here by JS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Close Button --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// --- Demo State Management ---</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const chatMessages = document.getElementById('chat-messages');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const chatOptions = document.getElementById('chat-options');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const contentZone = document.getElementById('content-zone');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// --- Content Templates ---</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderWelcomeContent() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="animate-fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold ni-text-blue mb-4"&gt;Welcome, Raj.&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-lg text-gray-700 mb-6"&gt;Based on your interest in EV Battery Test, I can help you configure a complete solution.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-gray-50 rounded-lg p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-lg font-semibold text-gray-800 mb-3"&gt;How I can help:&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc list-inside space-y-2 text-gray-600"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Identify the right PXI hardware&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Recommend compatible software&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Find application notes and case studies&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Connect you with a sales engineer&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderProductCard(product) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const products = {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>cycler: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: 'HV-1200 Battery Cycler',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>img: 'https://placehold.co/400x200/003c71/9fcd3a?text=HV-1200+Cycler',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>specs: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ label: 'Voltage', value: 'Up to 1200 V' },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ label: 'Current', value: 'Up to 600 A' },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ label: 'Channels', value: '1-4 per module' }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: 'A high-power, regenerative cycler for validating high-voltage battery packs.'</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>labview: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: 'LabVIEW + BTS Software',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>img: 'https://placehold.co/400x200/003c71/9fcd3a?text=LabVIEW+BTS',</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>specs: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ label: 'Control', value: 'Full hardware automation' },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ label: 'Test Steps', value: 'Pre-built sequences' },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ label: 'Data', value: 'Integrated data logging' }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: 'The software add-on for controlling hardware and automating lifecycle test sequences.'</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const p = products[product];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!p) return '';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 animate-fade-in mb-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="${p.img}" alt="${p.title}" class="w-full h-40 object-cover"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-5"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-bold ni-text-blue mb-3"&gt;${p.title}&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600 mb-4"&gt;${p.desc}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="grid grid-cols-3 gap-4 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>${p.specs.map(spec =&gt; `</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;span class="text-sm text-gray-500"&gt;${spec.label}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-md font-semibold text-gray-900"&gt;${spec.value}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>`).join('')}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderMeetingForm() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="animate-fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold ni-text-blue mb-4"&gt;Schedule Consultation&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700 mb-6"&gt;Please confirm your details to book a 15-minute call with a technical sales engineer.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="name" class="block text-sm font-medium text-gray-700"&gt;Full Name&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="text" id="name" value="Raj Singh" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="email" class="block text-sm font-medium text-gray-700"&gt;Email&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="email" id="email" value="raj.singh@tier1-auto.com" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="company" class="block text-sm font-medium text-gray-700"&gt;Company&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="text" id="company" value="Tier 1 Automotive Supplier" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;!-- Fake calendar slot --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="bg-blue-50 border border-blue-200 rounded-md p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="font-semibold text-blue-800"&gt;Selected Time:&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-blue-700"&gt;Tomorrow, October 23rd @ 10:30 AM CDT&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onclick="handleOption(8)" class="w-full ni-bg-green text-black font-bold py-3 px-4 rounded-lg shadow-md hover:opacity-90 transition-opacity"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>Confirm Meeting</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// --- Demo Flow Logic ---</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function startDemo() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step1-content').classList.add('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('solution-finder-trigger').classList.add('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('demo-container').classList.remove('hidden');</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>runStep(1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function resetDemo() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>location.reload();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function addAgentMessage(text) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const msg = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>msg.className = 'chat-bubble chat-bubble-agent';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>msg.innerHTML = text;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>chatMessages.appendChild(msg);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>scrollToBottom();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function addUserMessage(text) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const msg = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>msg.className = 'chat-bubble chat-bubble-user';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>msg.innerHTML = text;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>chatMessages.appendChild(msg);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>scrollToBottom();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function showOptions(options) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>chatOptions.innerHTML = ''; // Clear old options</p>
-<p class="p1"><span class="Apple-converted-space">            </span>options.forEach(option =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const btn = document.createElement('button');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btn.className = 'chat-option';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btn.innerHTML = option.text;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btn.onclick = () =&gt; handleOption(option.nextStep);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>chatOptions.appendChild(btn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function handleOption(nextStep) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Get the text of the button that was clicked</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const userText = event.target.innerHTML;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>addUserMessage(userText);</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Disable options after selection</p>
-<p class="p1"><span class="Apple-converted-space">            </span>chatOptions.innerHTML = '&lt;p class="text-sm text-gray-500 italic"&gt;Thinking...&lt;/p&gt;';</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Run the next step after a short delay</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>runStep(nextStep);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}, 1200);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function scrollToBottom() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>chatMessages.scrollTop = chatMessages.scrollHeight;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// The main demo "script"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function runStep(step) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>switch (step) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 1: // Agent Intro</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addAgentMessage("Hi! I see you're exploring our EV battery test solutions. I'm an NI-trained agent and can help configure a system.");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>contentZone.innerHTML = renderWelcomeContent();</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>addAgentMessage("What's your primary challenge: performance validation, lifecycle testing, or end-of-line manufacturing?");</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>showOptions([</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'Performance Validation', nextStep: 2 },</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'Lifecycle Testing', nextStep: 2 },</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'End-of-Line Manufacturing', nextStep: 2 }</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>]);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 1500);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 2: // User chooses "Lifecycle Testing" -&gt; Agent responds</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addAgentMessage("Understood. Lifecycle validation is a core strength. Our PXI-based systems are the industry standard for this.");</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>addAgentMessage("Based on your goal, I can pull up specifications for our &lt;strong&gt;High-Voltage Battery Cycler&lt;/strong&gt;, or would you prefer to see an &lt;strong&gt;application note&lt;/strong&gt; on 'Simulating Real-World Driving Profiles'?");</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>showOptions([</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'Show Cycler Specs', nextStep: 3 },</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'Show Application Note', nextStep: 3 }</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>]);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 1500);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 3: // User chooses "Show Cycler Specs" -&gt; Agent delivers content</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addAgentMessage("Here are the key specifications for the HV-1200 Battery Cycler. I've populated the content panel on your right with more details, including compatible chassis and software.");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>contentZone.innerHTML = renderProductCard('cycler');</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Auto-trigger next logical question</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>showOptions([</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'What software do I use for this?', nextStep: 4 }</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>]);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 2000);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 4: // User asks about software -&gt; Agent delivers content</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addAgentMessage("Great question. Most engineers pair this hardware with our &lt;strong&gt;LabVIEW&lt;/strong&gt; software and the &lt;strong&gt;Battery Test System (BTS) Software Add-On&lt;/strong&gt;.");</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>addAgentMessage("It provides pre-built test sequences and simplifies data logging. I've added the software details to your content panel.");</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>// Append the new card, "building" the solution</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>contentZone.innerHTML += renderProductCard('labview');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 1500);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Auto-trigger next logical step</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>showOptions([</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>{ text: 'This is complex, I need to talk to someone.', nextStep: 5 }</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>]);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 3000);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 5: // User asks for sales -&gt; Agent shows calendar</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addAgentMessage("I can help with that. Connecting you with a technical sales engineer is the best next step. They can help design your full test rack.");</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>addAgentMessage("Would you like to schedule a 15-minute virtual consultation now?");</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>// Update content zone with calendar/form</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>contentZone.innerHTML = renderMeetingForm();</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>// Clear options, as the next step is in the content-zone</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>chatOptions.innerHTML = '';<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 1500);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 8: // User "clicks" confirm in the form</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// This step is triggered by the button in renderMeetingForm()</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// The addUserMessage was already handled by the button's handleOption()</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addUserMessage("&lt;em&gt;[Confirmed Meeting Details]&lt;/em&gt;");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>addAgentMessage("Your consultation is confirmed! A calendar invite has been sent to &lt;strong&gt;raj.singh@tier1-auto.com&lt;/strong&gt;.");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>contentZone.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="text-center p-10 animate-fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg class="h-16 w-16 ni-text-green mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h2 class="text-2xl font-bold ni-text-blue mb-2"&gt;Thank You!&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-lg text-gray-700"&gt;Your meeting is set. All of our conversation notes and the products we discussed have been sent to the sales engineer.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>addAgentMessage("When you return to ni.com, I'll remember where we left off. You can click the 'X' to close this window.");</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>chatOptions.innerHTML = '&lt;button onclick="resetDemo()" class="chat-option bg-gray-200"&gt;Reset Demo&lt;/button&gt;';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 1500);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Add a class for fade-in animation</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const styleSheet = document.createElement("style");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>styleSheet.type = "text/css";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>styleSheet.innerText = `</p>
-<p class="p1"><span class="Apple-converted-space">            </span>@keyframes fadeIn {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>from { opacity: 0; transform: translateY(10px); }</p>
-<p class="p1"><span class="Apple-converted-space">                </span>to { opacity: 1; transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.animate-fade-in {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>animation: fadeIn 0.5s ease-out;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.head.appendChild(styleSheet);</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<body class="bg-gray-100">
+
+    <!--
+      HEADER: Fake NI Navigation Bar
+    -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <svg class="h-8 w-auto" viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M37.701 100V0H0V100H37.701ZM14.138 86.862V13.138H23.563V86.862H14.138Z" fill="#003C71"/>
+                        <path d="M54.1378 100V0H91.8388V13.1379H68.2758V43.431H91.8388V56.569H68.2758V86.8621H91.8388V100H54.1378Z" fill="#003C71"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M110.05 0H147.751V100H110.05V0ZM124.188 13.1379V86.8621H133.613V13.1379H124.188Z" fill="#003C71"/>
+                        <path d="M211.53 79.549L230.379 0H245.516L218.421 100H198.549L171.454 0H186.591L205.44 79.549H211.53Z" fill="#003C71"/>
+                        <path d="M261.942 100V0H300.731C322.459 0 339.297 16.838 339.297 38.5659V61.4341C339.297 83.162 322.459 100 300.731 100H261.942ZM276.08 13.1379V86.8621H300.731C314.545 86.8621 325.16 76.2478 325.16 61.4341V38.5659C325.16 23.7522 314.545 13.1379 300.731 13.1379H276.08Z" fill="#003C71"/>
+                    </svg>
+                </div>
+                <!-- Nav Links (Fake) -->
+                <div class="hidden sm:flex sm:space-x-8">
+                    <a href="#" class="font-medium text-gray-900">Solutions</a>
+                    <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Products</a>
+                    <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Industries</a>
+                    <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Support</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!--
+      STEP 1 & 2: Initial Personalized Homepage 
+      This is shown on load. It's already personalized for "Raj".
+    -->
+    <main id="step1-content" class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Hero Section -->
+        <div class="bg-white rounded-lg shadow-xl overflow-hidden mb-8">
+            <div class="p-8 sm:p-12">
+                <h1 class="text-3xl sm:text-4xl font-bold ni-text-blue mb-4">Accelerate Your EV Battery Validation</h1>
+                <p class="text-lg text-gray-700">Design and deploy comprehensive test systems for every stage of the battery lifecycle, from R&D to production.</p>
+            </div>
+        </div>
+
+        <!-- Featured Content Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Featured Products (Personalized) -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold ni-text-blue mb-3">Featured Products</h2>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-800">
+                            <svg class="h-5 w-5 ni-text-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            PXI Hardware Platform
+                        </li>
+                        <li class="flex items-center text-gray-800">
+                            <svg class="h-5 w-5 ni-text-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            High-Voltage Battery Cyclers
+                        </li>
+                        <li class="flex items-center text-gray-800">
+                            <svg class="h-5 w-5 ni-text-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Battery Test System (BTS)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Case Study (Personalized) -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden md:col-span-2">
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold ni-text-blue mb-3">Customer Success Story</h2>
+                    <img src="https://placehold.co/600x200/003c71/9fcd3a?text=Major+Auto+OEM+Validates+EV+Packs" alt="Automotive OEM" class="w-full h-32 object-cover rounded mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">How a Major Auto OEM Validates Battery Packs with NI</h3>
+                    <p class="text-gray-600 mt-2">See how our PXI-based systems helped a leading automaker reduce battery test time by 30%.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!--
+      STEP 3: Agentic Initiation Component
+      A pulsing button that starts the demo.
+    -->
+    <div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50">
+        <button onclick="startDemo()" class="pulse-button ni-bg-green text-black font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center">
+            <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            NI Solution Finder
+        </button>
+    </div>
+
+
+    <!--
+      STEP 4-8: Main Demo Container
+      This is hidden by default and appears when the demo starts.
+    -->
+    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40">
+        <div class="flex h-full w-full items-center justify-center p-4">
+            <div class="flex flex-col md:flex-row h-[90vh] w-full max-w-6xl bg-white rounded-xl shadow-2xl overflow-hidden">
+                
+                <!-- Left: Chat Panel -->
+                <div class="w-full md:w-2/5 border-r border-gray-200 flex flex-col h-full">
+                    <div class="p-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold ni-text-blue">NI Solution Finder</h2>
+                        <p class="text-sm text-gray-600">Powered by NI-Trained Agent</p>
+                    </div>
+                    
+                    <!-- Chat Messages -->
+                    <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
+                        <!-- Messages will be injected here by JS -->
+                    </div>
+                    
+                    <!-- Chat Options -->
+                    <div id="chat-options" class="p-4 bg-gray-50 border-t border-gray-200 flex flex-wrap justify-center">
+                        <!-- Options will be injected here by JS -->
+                    </div>
+                </div>
+
+                <!-- Right: Agentic Content Zone -->
+                <div class="w-full md:w-3/5 h-full overflow-y-auto">
+                    <div id="content-zone" class="p-6 sm:p-10">
+                        <!-- Content will be injected here by JS -->
+                    </div>
+                </div>
+                
+                <!-- Close Button -->
+                <button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Demo State Management ---
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.getElementById('chat-options');
+        const contentZone = document.getElementById('content-zone');
+
+        // --- Content Templates ---
+
+        function renderWelcomeContent() {
+            return `
+                <div class="animate-fade-in">
+                    <h2 class="text-2xl font-bold ni-text-blue mb-4">Welcome, Raj.</h2>
+                    <p class="text-lg text-gray-700 mb-6">Based on your interest in EV Battery Test, I can help you configure a complete solution.</p>
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">How I can help:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li>Identify the right PXI hardware</li>
+                            <li>Recommend compatible software</li>
+                            <li>Find application notes and case studies</li>
+                            <li>Connect you with a sales engineer</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProductCard(product) {
+            const products = {
+                cycler: {
+                    title: 'HV-1200 Battery Cycler',
+                    img: 'https://placehold.co/400x200/003c71/9fcd3a?text=HV-1200+Cycler',
+                    specs: [
+                        { label: 'Voltage', value: 'Up to 1200 V' },
+                        { label: 'Current', value: 'Up to 600 A' },
+                        { label: 'Channels', value: '1-4 per module' }
+                    ],
+                    desc: 'A high-power, regenerative cycler for validating high-voltage battery packs.'
+                },
+                labview: {
+                    title: 'LabVIEW + BTS Software',
+                    img: 'https://placehold.co/400x200/003c71/9fcd3a?text=LabVIEW+BTS',
+                    specs: [
+                        { label: 'Control', value: 'Full hardware automation' },
+                        { label: 'Test Steps', value: 'Pre-built sequences' },
+                        { label: 'Data', value: 'Integrated data logging' }
+                    ],
+                    desc: 'The software add-on for controlling hardware and automating lifecycle test sequences.'
+                }
+            };
+            
+            const p = products[product];
+            if (!p) return '';
+
+            return `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 animate-fade-in mb-6">
+                    <img src="${p.img}" alt="${p.title}" class="w-full h-40 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold ni-text-blue mb-3">${p.title}</h3>
+                        <p class="text-gray-600 mb-4">${p.desc}</p>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            ${p.specs.map(spec => `
+                                <div>
+                                    <span class="text-sm text-gray-500">${spec.label}</span>
+                                    <p class="text-md font-semibold text-gray-900">${spec.value}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderMeetingForm() {
+            return `
+                <div class="animate-fade-in">
+                    <h2 class="text-2xl font-bold ni-text-blue mb-4">Schedule Consultation</h2>
+                    <p class="text-gray-700 mb-6">Please confirm your details to book a 15-minute call with a technical sales engineer.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="name" value="Raj Singh" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="email" value="raj.singh@tier1-auto.com" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
+                        </div>
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                            <input type="text" id="company" value="Tier 1 Automotive Supplier" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
+                        </div>
+                        <!-- Fake calendar slot -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                            <p class="font-semibold text-blue-800">Selected Time:</p>
+                            <p class="text-blue-700">Tomorrow, October 23rd @ 10:30 AM CDT</p>
+                        </div>
+                        <button onclick="handleOption(8)" class="w-full ni-bg-green text-black font-bold py-3 px-4 rounded-lg shadow-md hover:opacity-90 transition-opacity">
+                            Confirm Meeting
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Demo Flow Logic ---
+        
+        function startDemo() {
+            document.getElementById('step1-content').classList.add('hidden');
+            document.getElementById('solution-finder-trigger').classList.add('hidden');
+            document.getElementById('demo-container').classList.remove('hidden');
+            
+            runStep(1);
+        }
+
+        function resetDemo() {
+            location.reload();
+        }
+
+        function addAgentMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-agent';
+            msg.innerHTML = text;
+            chatMessages.appendChild(msg);
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-user';
+            msg.innerHTML = text;
+            chatMessages.appendChild(msg);
+            scrollToBottom();
+        }
+
+        function showOptions(options) {
+            chatOptions.innerHTML = ''; // Clear old options
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-option';
+                btn.innerHTML = option.text;
+                btn.onclick = () => handleOption(option.nextStep);
+                chatOptions.appendChild(btn);
+            });
+        }
+        
+        function handleOption(nextStep) {
+            // Get the text of the button that was clicked
+            const userText = event.target.innerHTML;
+            addUserMessage(userText);
+            
+            // Disable options after selection
+            chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
+            
+            // Run the next step after a short delay
+            setTimeout(() => {
+                runStep(nextStep);
+            }, 1200);
+        }
+        
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // The main demo "script"
+        function runStep(step) {
+            switch (step) {
+                case 1: // Agent Intro
+                    addAgentMessage("Hi! I see you're exploring our EV battery test solutions. I'm an NI-trained agent and can help configure a system.");
+                    contentZone.innerHTML = renderWelcomeContent();
+                    
+                    setTimeout(() => {
+                        addAgentMessage("What's your primary challenge: performance validation, lifecycle testing, or end-of-line manufacturing?");
+                        showOptions([
+                            { text: 'Performance Validation', nextStep: 2 },
+                            { text: 'Lifecycle Testing', nextStep: 2 },
+                            { text: 'End-of-Line Manufacturing', nextStep: 2 }
+                        ]);
+                    }, 1500);
+                    break;
+                
+                case 2: // User chooses "Lifecycle Testing" -> Agent responds
+                    addAgentMessage("Understood. Lifecycle validation is a core strength. Our PXI-based systems are the industry standard for this.");
+                    
+                    setTimeout(() => {
+                        addAgentMessage("Based on your goal, I can pull up specifications for our <strong>High-Voltage Battery Cycler</strong>, or would you prefer to see an <strong>application note</strong> on 'Simulating Real-World Driving Profiles'?");
+                        showOptions([
+                            { text: 'Show Cycler Specs', nextStep: 3 },
+                            { text: 'Show Application Note', nextStep: 3 }
+                        ]);
+                    }, 1500);
+                    break;
+                    
+                case 3: // User chooses "Show Cycler Specs" -> Agent delivers content
+                    addAgentMessage("Here are the key specifications for the HV-1200 Battery Cycler. I've populated the content panel on your right with more details, including compatible chassis and software.");
+                    contentZone.innerHTML = renderProductCard('cycler');
+                    
+                    // Auto-trigger next logical question
+                    setTimeout(() => {
+                        showOptions([
+                            { text: 'What software do I use for this?', nextStep: 4 }
+                        ]);
+                    }, 2000);
+                    break;
+                
+                case 4: // User asks about software -> Agent delivers content
+                    addAgentMessage("Great question. Most engineers pair this hardware with our <strong>LabVIEW</strong> software and the <strong>Battery Test System (BTS) Software Add-On</strong>.");
+                    
+                    setTimeout(() => {
+                        addAgentMessage("It provides pre-built test sequences and simplifies data logging. I've added the software details to your content panel.");
+                        // Append the new card, "building" the solution
+                        contentZone.innerHTML += renderProductCard('labview');
+                    }, 1500);
+                    
+                    // Auto-trigger next logical step
+                    setTimeout(() => {
+                        showOptions([
+                            { text: 'This is complex, I need to talk to someone.', nextStep: 5 }
+                        ]);
+                    }, 3000);
+                    break;
+                    
+                case 5: // User asks for sales -> Agent shows calendar
+                    addAgentMessage("I can help with that. Connecting you with a technical sales engineer is the best next step. They can help design your full test rack.");
+                    
+                    setTimeout(() => {
+                        addAgentMessage("Would you like to schedule a 15-minute virtual consultation now?");
+                        // Update content zone with calendar/form
+                        contentZone.innerHTML = renderMeetingForm();
+                        // Clear options, as the next step is in the content-zone
+                        chatOptions.innerHTML = ''; 
+                    }, 1500);
+                    break;
+                    
+                case 8: // User "clicks" confirm in the form
+                    // This step is triggered by the button in renderMeetingForm()
+                    // The addUserMessage was already handled by the button's handleOption()
+                    addUserMessage("<em>[Confirmed Meeting Details]</em>");
+                    addAgentMessage("Your consultation is confirmed! A calendar invite has been sent to <strong>raj.singh@tier1-auto.com</strong>.");
+                    contentZone.innerHTML = `
+                        <div class="text-center p-10 animate-fade-in">
+                            <svg class="h-16 w-16 ni-text-green mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <h2 class="text-2xl font-bold ni-text-blue mb-2">Thank You!</h2>
+                            <p class="text-lg text-gray-700">Your meeting is set. All of our conversation notes and the products we discussed have been sent to the sales engineer.</p>
+                        </div>
+                    `;
+                    
+                    setTimeout(() => {
+                        addAgentMessage("When you return to ni.com, I'll remember where we left off. You can click the 'X' to close this window.");
+                        chatOptions.innerHTML = '<button onclick="resetDemo()" class="chat-option bg-gray-200">Reset Demo</button>';
+                    }, 1500);
+                    break;
+            }
+        }
+        
+        // Add a class for fade-in animation
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-out;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        
+    </script>
 </body>
 </html>
