@@ -1,0 +1,6 @@
+{
+  "root": ".",
+  "routes": {
+    "/": "ni-demo.html"
+  }
+}
