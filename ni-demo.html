@@ -14,6 +14,7 @@
             --ni-green: #044123; /* Updated */
             --ni-dark-blue: #044123; /* Updated color for footer */
             --ni-light-gray: #f8f9fa;
+            --ni-finder-green: #009B65; /* New color for Solution Finder */
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -29,11 +30,12 @@
         .ni-border-green { border-color: var(--ni-green); }
         
         .ni-bg-light-gray { background-color: var(--ni-light-gray); }
+        .ni-bg-finder-green { background-color: var(--ni-finder-green); } /* New class for Solution Finder */
 
         /* Header link style */
         .header-link {
             @apply py-6 border-b-4 border-transparent font-medium; /* Tailwind layout classes */
-            color: #32EB96; /* Set color explicitly */
+            color: #006B46; /* Set color explicitly */
             @apply hover:border-b-4 hover:border-ni-green hover:text-black;
         }
         
@@ -77,18 +79,18 @@
         
         /* Pulsing button */
         .pulse-button {
-            box-shadow: 0 0 0 0 rgba(4, 65, 35, 0.7); /* Updated pulse color */
+            box-shadow: 0 0 0 0 rgba(0, 155, 101, 0.7); /* Updated pulse color to match finder */
             animation: pulse 1.5s infinite;
         }
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(4, 65, 35, 0.7); /* Updated pulse color */
+                box-shadow: 0 0 0 0 rgba(0, 155, 101, 0.7); /* Updated pulse color */
             }
             70% {
-                box-shadow: 0 0 0 12px rgba(4, 65, 35, 0); /* Updated pulse color */
+                box-shadow: 0 0 0 12px rgba(0, 155, 101, 0); /* Updated pulse color */
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(4, 65, 35, 0); /* Updated pulse color */
+                box-shadow: 0 0 0 0 rgba(0, 155, 101, 0); /* Updated pulse color */
             }
         }
     </style>
@@ -327,7 +329,7 @@
       This is the same pulsing button, now floating over the real page.
     -->
     <div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50">
-        <button onclick="startDemo()" class="pulse-button ni-bg-green text-white font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center"> <!-- Updated text-black to text-white -->
+        <button onclick="startDemo()" class="pulse-button ni-bg-finder-green text-white font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center"> <!-- Updated ni-bg-green to ni-bg-finder-green -->
             <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
             NI Solution Finder
         </button>
@@ -685,6 +687,7 @@
     </script>
 </body>
 </html>
+
 
 
 
