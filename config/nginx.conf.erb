@@ -6,27 +6,23 @@ events {
 }
 
 http {
-# Update MIME types path for Heroku
-  types {
-    text/html                             html htm shtml;
-    text/css                              css;
-    text/xml                              xml;
-    image/gif                             gif;
-    image/jpeg                            jpeg jpg;
-    application/javascript                js;
-    application/json                      json;
-    image/png                             png;
-    image/svg+xml                         svg svgz;
-    image/x-icon                          ico;
-  }
-  default_type application/octet-stream;  
-# Redirect all logs to Heroku's log stream
+  # Redirect all logs to Heroku's log stream
   error_log stderr;
   access_log /dev/stdout;
   
-  # --- FIX: Force the default type to text/html ---
-  default_type  text/html;
-  # -----------------------------------------------
+  # --- FIX: Remove the duplicate default_type ---
+  # default_type  text/html;
+  
+  # --- ADD the types explicitly ---
+  types {
+    text/html     html;
+    text/css      css;
+    application/javascript js;
+  }
+  # -----------------------------------
+
+  # This is the default that the buildpack provides
+  default_type  application/octet-stream;
 
   sendfile      on;
   keepalive_timeout 65;
