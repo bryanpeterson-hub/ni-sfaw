@@ -10,9 +10,16 @@ http {
   error_log stderr;
   access_log /dev/stdout;
 
-  # --- FIX: Correct path to mime.types (it's in the same folder) ---
-  include       mime.types;
-  # -------------------------------------------------------------
+  # --- FIX: Remove the failing include line ---
+  # include       mime.types;
+  
+  # --- ADD the types explicitly ---
+  types {
+    text/html     html;
+    text/css      css;
+    application/javascript js;
+  }
+  # -----------------------------------
 
   default_type  application/octet-stream;
   sendfile      on;
