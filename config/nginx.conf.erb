@@ -1,6 +1,12 @@
 worker_processes 1;
 daemon off; # Run in the foreground
 
+# --- ADD THESE TWO LINES ---
+# Redirect all logs to Heroku's log stream
+error_log stderr;
+access_log /dev/stdout;
+# ---------------------------
+
 events {
   worker_connections 1024;
 }
@@ -19,7 +25,6 @@ http {
     # Set the root directory to your app's root
     root /app;
 
-    # This is the important part:
     # It tells NGINX to use ni-demo.html as the default file
     # for the main "/" URL.
     location / {
@@ -27,3 +32,4 @@ http {
     }
   }
 }
+
