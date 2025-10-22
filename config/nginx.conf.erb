@@ -10,9 +10,6 @@ http {
   error_log stderr;
   access_log /dev/stdout;
   
-  # --- FIX: Remove the duplicate default_type ---
-  # default_type  text/html;
-  
   # --- ADD the types explicitly ---
   types {
     text/html     html;
@@ -35,6 +32,21 @@ http {
     # Set the root directory to your app's root
     root /app;
 
+    # --- NEW FIX: Add a specific location block for the file ---
+    # This will match the file after 'index' rewrites the request.
+    location = /ni-demo.html {
+      # This ensures any request for this exact file gets this type.
+      # We clear all other types and set html as the default.
+      types { }
+      default_type text/html;
+
+      # Force browser to never cache this page
+      add_header 'Cache-Control' 'no-cache, no-store, must-revalidate';
+      add_header 'Pragma' 'no-cache';
+      add_header 'Expires' '0';
+    }
+    # ---------------------------------------------------------
+
     location / {
       # Use ni-demo.html as the default file
       index ni-demo.html;
@@ -42,11 +54,10 @@ http {
       # Turn off directory listing
       autoindex off; 
 
-      # --- ADD: Force browser to never cache this page ---
+      # Add cache headers here too, just in case.
       add_header 'Cache-Control' 'no-cache, no-store, must-revalidate';
       add_header 'Pragma' 'no-cache';
       add_header 'Expires' '0';
-      # ----------------------------------------------------
     }
   }
 }
