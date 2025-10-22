@@ -18,10 +18,10 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            color: #333333;
+            color: #333333; /* Default text color */
         }
         .ni-bg-blue { background-color: var(--ni-blue); }
-        .ni-text-blue { color: var(--ni-blue); }
+        .ni-text-blue { color: var(--ni-blue); } /* New text color class */
         .ni-bg-dark-blue { background-color: var(--ni-dark-blue); }
         .ni-text-dark-blue { color: var(--ni-dark-blue); }
         
@@ -183,13 +183,13 @@
                 <!-- Title and Subtitle -->
                 <div class="text-center mb-12 max-w-3xl mx-auto">
                     <h2 class="text-4xl font-bold mb-4">Accelerate the Path to Vision Zero</h2>
-                    <p class="text-lg text-gray-700">
+                    <p class="text-lg ni-text-blue"> <!-- Updated text color -->
                         Together, we can create a more sustainable future for mobility—without shortcuts. NI can help you ensure quality and accelerate time to market. Let’s turn test into your enabler of performance and strategic advantage.
                     </p>
                 </div>
                 
-                <!-- Tabs -->
-                <div class="flex justify-center border-b border-gray-200 mb-16">
+                <!-- Tabs - Added spacing -->
+                <div class="flex justify-center border-b border-gray-200 mb-16 space-x-8"> 
                     <button class="tab tab-active">Overview</button>
                     <button class="tab">Solutions</button>
                     <button class="tab">Industry Trends</button>
@@ -200,15 +200,15 @@
                 <!-- Content Block (Image + Text) -->
                 <div class="flex flex-col md:flex-row items-center gap-12">
                     <div class="w-full md:w-1/2">
-                        <!-- Placeholder for the semi-circle image effect -->
+                        <!-- Updated image placeholder -->
                         <div class="relative w-full aspect-square max-w-lg mx-auto">
-                             <img src="https://placehold.co/600x600/CCCCCC/333333?text=Vision+Zero+Image" alt="Man in car with green overlay" class="rounded-lg shadow-lg">
+                             <img src="https://placehold.co/600x600/CCCCCC/044123?text=Man+in+Car+Vision+Zero" alt="Man in car with green overlay" class="rounded-lg shadow-lg">
                              <!-- This would typically involve more complex SVG or positioning for the circle -->
                         </div>
                     </div>
                     <div class="w-full md:w-1/2">
                          <h3 class="text-3xl font-bold mb-4">A Better Way to Vision Zero</h3>
-                         <p class="text-lg text-gray-700">
+                         <p class="text-lg ni-text-blue"> <!-- Updated text color -->
                              Using our automotive test systems, we create a common digital thread of data across the product life cycle to deliver analytics and insights that help you optimize performance—getting you to market faster while ensuring quality.
                          </p>
                     </div>
@@ -225,32 +225,32 @@
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-3">ADAS and Autonomous Driving</h3>
-                            <p class="text-gray-600 mb-4">Validate your ADAS and AD systems with open, data-driven test.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
+                            <p class="ni-text-blue mb-4">Validate your ADAS and AD systems with open, data-driven test.</p> <!-- Updated text color -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Updated text color -->
                         </div>
                     </div>
                     <!-- Solution 2 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-3">Electric Vehicle (EV) Test</h3>
-                            <p class="text-gray-600 mb-4">Validate performance and reliability for all your battery test needs.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
+                            <p class="ni-text-blue mb-4">Validate performance and reliability for all your battery test needs.</p> <!-- Updated text color -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Updated text color -->
                         </div>
                     </div>
                     <!-- Solution 3 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-3">Infotainment and V2X</h3>
-                            <p class="text-gray-600 mb-4">Test infotainment, telematics, and V2X applications.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
+                            <p class="ni-text-blue mb-4">Test infotainment, telematics, and V2X applications.</p> <!-- Updated text color -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Updated text color -->
                         </div>
                     </div>
                     <!-- Solution 4 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-3">Body and Chassis</h3>
-                            <p class="text-gray-600 mb-4">Ensure the reliability of vehicle control, safety, and comfort systems.</p>
-                            <a href="#" class="font-medium hover:underline">Learn More &rarr;</a>
+                            <p class="ni-text-blue mb-4">Ensure the reliability of vehicle control, safety, and comfort systems.</p> <!-- Updated text color -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Updated text color -->
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,7 @@
 
         <!-- REMOVED: Aerospace and Defense Test Solutions Section -->
         
-        <!-- Case Study Section (Same as ni-demo.html) -->
+        <!-- Case Study Section -->
         <section class="py-16 ni-bg-light-gray">
             <div class="container mx-auto px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row items-center bg-gray-50 rounded-lg shadow-xl overflow-hidden">
@@ -269,7 +269,7 @@
                     <div class="w-full md:w-1/2 p-8 md:p-12">
                         <h3 class="text-sm font-bold uppercase ni-text-green mb-2">Customer Success Story</h3>
                         <h2 class="text-3xl font-bold mb-4">How a Major Auto OEM Validates Battery Packs with NI</h2>
-                        <p class="text-lg text-gray-700 mb-6">See how our PXI-based systems and regenerative cyclers helped a leading automaker reduce battery validation test time by 30% and accelerate their time-to-market.</p>
+                        <p class="text-lg ni-text-blue mb-6">See how our PXI-based systems and regenerative cyclers helped a leading automaker reduce battery validation test time by 30% and accelerate their time-to-market.</p> <!-- Updated text color -->
                         <a href="#" class="ni-bg-blue text-white font-bold py-3 px-6 rounded-full text-base hover:opacity-90 transition-opacity">
                             Read the Case Study
                         </a>
@@ -278,7 +278,7 @@
             </div>
         </section>
 
-        <!-- Explore Featured Products (Same as ni-demo.html) -->
+        <!-- Explore Featured Products -->
         <section class="py-16 bg-white">
             <div class="container mx-auto px-6 lg:px-8">
                 <h2 class="text-3xl font-bold text-center mb-12">Explore Our Products</h2>
@@ -286,17 +286,17 @@
                     <!-- Product 1 -->
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-semibold mb-3">PXI Platform</h3>
-                        <p class="text-gray-600">A modular, high-performance platform for automated test and measurement.</p>
+                        <p class="ni-text-blue">A modular, high-performance platform for automated test and measurement.</p> <!-- Updated text color -->
                     </div>
                     <!-- Product 2 -->
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-semibold mb-3">LabVIEW</h3>
-                        <p class="text-gray-600">A graphical programming environment for test, measurement, and control.</p>
+                        <p class="ni-text-blue">A graphical programming environment for test, measurement, and control.</p> <!-- Updated text color -->
                     </div>
                     <!-- Product 3 -->
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-semibold mb-3">TestStand</h3>
-                        <p class="text-gray-600">Ready-to-run test management software for test sequence development.</p>
+                        <p class="ni-text-blue">Ready-to-run test management software for test sequence development.</p> <!-- Updated text color -->
                     </div>
                 </div>
             </div>
@@ -310,17 +310,17 @@
                     <!-- Resource 1 -->
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-semibold mb-3">How to Build a Test System</h3>
-                        <p class="text-gray-600">Learn the fundamentals of building a high-performance, automated test system from the ground up.</p>
+                        <p class="ni-text-blue">Learn the fundamentals of building a high-performance, automated test system from the ground up.</p> <!-- Updated text color -->
                     </div>
                     <!-- Resource 2 -->
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-semibold mb-3">Automotive Test Trends</h3>
-                        <p class="text-gray-600">See our latest report on the trends shaping the future of vehicle test and validation.</p>
+                        <p class="ni-text-blue">See our latest report on the trends shaping the future of vehicle test and validation.</p> <!-- Updated text color -->
                     </div>
                     <!-- Resource 3 -->
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h3 class="text-xl font-semibold mb-3">NI.com/Transportation</h3>
-                        <p class="text-gray-600">Visit our main portal for all transportation-related solutions, products, and resources.</p>
+                        <p class="ni-text-blue">Visit our main portal for all transportation-related solutions, products, and resources.</p> <!-- Updated text color -->
                     </div>
                 </div>
             </div>
@@ -461,7 +461,7 @@
             return `
                 <div class="animate-fade-in">
                     <h2 class="text-2xl font-bold ni-text-blue mb-4">Welcome, Raj.</h2>
-                    <p class="text-lg text-gray-700 mb-6">Based on your interest in Transportation Test, I can help you find relevant solutions.</p>
+                    <p class="text-lg ni-text-blue mb-6">Based on your interest in Transportation Test, I can help you find relevant solutions.</p> <!-- Updated text color -->
                     <div class="bg-gray-50 rounded-lg p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-3">How I can help:</h3>
                         <ul class="list-disc list-inside space-y-2 text-gray-600">
@@ -508,12 +508,12 @@
                     <img src="${p.img}" alt="${p.title}" class="w-full h-40 object-cover">
                     <div class="p-5">
                         <h3 class="text-xl font-bold ni-text-blue mb-3">${p.title}</h3>
-                        <p class="text-gray-600 mb-4">${p.desc}</p>
+                        <p class="ni-text-blue mb-4">${p.desc}</p> <!-- Updated text color -->
                         <div class="grid grid-cols-3 gap-4 text-center">
                             ${p.specs.map(spec => `
                                 <div>
                                     <span class="text-sm text-gray-500">${spec.label}</span>
-                                    <p class="text-md font-semibold text-gray-900">${spec.value}</p>
+                                    <p class="text-md font-semibold">${spec.value}</p> <!-- Removed text-gray-900 -->
                                 </div>
                             `).join('')}
                         </div>
@@ -527,18 +527,18 @@
              return `
                 <div class="animate-fade-in">
                     <h2 class="text-2xl font-bold ni-text-blue mb-4">Schedule Consultation</h2>
-                    <p class="text-gray-700 mb-6">Please confirm your details to book a 15-minute call with a technical sales engineer.</p>
+                    <p class="ni-text-blue mb-6">Please confirm your details to book a 15-minute call with a technical sales engineer.</p> <!-- Updated text color -->
                     <div class="space-y-4">
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <label for="name" class="block text-sm font-medium ni-text-blue">Full Name</label> <!-- Updated text color -->
                             <input type="text" id="name" value="Raj Singh" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
                         </div>
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <label for="email" class="block text-sm font-medium ni-text-blue">Email</label> <!-- Updated text color -->
                             <input type="email" id="email" value="raj.singh@tier1-auto.com" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
                         </div>
                         <div>
-                            <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                            <label for="company" class="block text-sm font-medium ni-text-blue">Company</label> <!-- Updated text color -->
                             <input type="text" id="company" value="Tier 1 Automotive Supplier" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
                         </div>
                         <!-- Fake calendar slot -->
@@ -695,7 +695,7 @@
                         <div class="text-center p-10 animate-fade-in">
                             <svg class="h-16 w-16 ni-text-green mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <h2 class="text-2xl font-bold ni-text-blue mb-2">Thank You!</h2>
-                            <p class="text-lg text-gray-700">Your meeting is set. All of our conversation notes and the products we discussed have been sent to the sales engineer.</p>
+                            <p class="text-lg ni-text-blue">Your meeting is set. All of our conversation notes and the products we discussed have been sent to the sales engineer.</p> <!-- Updated text color -->
                         </div>
                     `;
                     
