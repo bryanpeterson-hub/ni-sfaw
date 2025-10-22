@@ -9,13 +9,6 @@ http {
   # Redirect all logs to Heroku's log stream
   error_log stderr;
   access_log /dev/stdout;
-
-  # --- FIX: Remove the types block ---
-  # types {
-  #   text/html     html;
-  #   text/css      css;
-  #   application/javascript js;
-  # }
   
   # --- FIX: Force the default type to text/html ---
   default_type  text/html;
@@ -38,6 +31,12 @@ http {
       
       # Turn off directory listing
       autoindex off; 
+
+      # --- ADD: Force browser to never cache this page ---
+      add_header 'Cache-Control' 'no-cache, no-store, must-revalidate';
+      add_header 'Pragma' 'no-cache';
+      add_header 'Expires' '0';
+      # ----------------------------------------------------
     }
   }
 }
