@@ -1,38 +1,57 @@
 worker_processes 1;
-daemon off;
+daemon off; # Run in the foreground
 
 events {
   worker_connections 1024;
 }
 
 http {
-  # Add MIME types configuration
-  include /etc/nginx/mime.types;
-  default_type application/octet-stream;
-
-  # Logs configuration
+# Update MIME types path for Heroku
+  types {
+    text/html                             html htm shtml;
+    text/css                              css;
+    text/xml                              xml;
+    image/gif                             gif;
+    image/jpeg                            jpeg jpg;
+    application/javascript                js;
+    application/json                      json;
+    image/png                             png;
+    image/svg+xml                         svg svgz;
+    image/x-icon                          ico;
+  }
+  default_type application/octet-stream;  
+# Redirect all logs to Heroku's log stream
   error_log stderr;
   access_log /dev/stdout;
+  
+  # --- FIX: Force the default type to text/html ---
+  default_type  text/html;
+  # -----------------------------------------------
 
-  sendfile on;
+  sendfile      on;
   keepalive_timeout 65;
 
   server {
+    # Listen on the port Heroku provides
     listen <%= ENV["PORT"] %>;
     server_name _;
+    
+    # Set the root directory to your app's root
     root /app;
 
     location / {
+      # Use ni-demo.html as the default file
       index ni-demo.html;
-      autoindex off;
       
-      # Force content type for HTML files
-      add_header Content-Type text/html;
-      
-      # Cache control headers
+      # Turn off directory listing
+      autoindex off; 
+
+      # --- ADD: Force browser to never cache this page ---
       add_header 'Cache-Control' 'no-cache, no-store, must-revalidate';
       add_header 'Pragma' 'no-cache';
       add_header 'Expires' '0';
+      # ----------------------------------------------------
     }
   }
 }
+
