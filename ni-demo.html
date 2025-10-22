@@ -484,8 +484,20 @@
                     </div>
                     
                     <!-- Chat Options -->
-                    <div id="chat-options" class="p-4 bg-gray-50 border-t border-gray-200 flex flex-wrap justify-center">
+                    <div id="chat-options" class="p-4 bg-gray-50 flex flex-wrap justify-center">
                         <!-- Options will be injected here by JS -->
+                    </div>
+
+                    <!-- NEW: Text Input Bar -->
+                    <div id="chat-input-bar" class="p-4 bg-white border-t border-gray-200">
+                        <form id="chat-form" class="flex space-x-3">
+                            <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border-gray-300 rounded-full shadow-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-ni-blue" autocomplete="off">
+                            <button type="submit" class="ni-bg-blue text-white rounded-full p-0 w-10 h-10 flex items-center justify-center flex-shrink-0 hover:opacity-90">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transform: rotate(90deg);">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 
@@ -505,7 +517,8 @@
         // --- Demo State Management ---
         const chatMessages = document.getElementById('chat-messages');
         const chatOptions = document.getElementById('chat-options');
-        // const contentZone = document.getElementById('content-zone'); // No longer needed
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
         
         // --- Demo Flow Logic ---
         
@@ -525,6 +538,7 @@
             // Clear the demo state
             chatMessages.innerHTML = '';
             chatOptions.innerHTML = '';
+            chatInput.value = ''; // Clear text input
         }
 
         // --- New "Typing" Simulation ---
@@ -604,6 +618,30 @@
                 runStep(nextStep);
             }, 1200);
         }
+
+        // --- NEW: Handle Text Input ---
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const text = chatInput.value.trim();
+            
+            if (!text) return; // Do nothing if input is empty
+            
+            addUserMessage(text);
+            chatInput.value = '';
+            
+            // Clear buttons, as text input overrides them
+            chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
+            
+            // Simulate a canned response to guide user back to button flow
+            setTimeout(() => {
+                addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
+                // Go back to the main options
+                runStep(99); 
+            }, 1200);
+        }
+        
+        // Add event listener for the new form
+        chatForm.addEventListener('submit', handleFormSubmit);
         
         function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
