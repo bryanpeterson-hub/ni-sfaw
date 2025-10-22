@@ -1,0 +1,9 @@
+{
+  "name": "ni-demo-app",
+  "version": "1.0.0",
+  "description": "Static NI Demo",
+  "engines": {
+    "node": "18.x"
+  }
+}
+
