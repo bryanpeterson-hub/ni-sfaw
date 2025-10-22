@@ -10,18 +10,17 @@ http {
   error_log stderr;
   access_log /dev/stdout;
 
-  # --- FIX: Remove the failing include line ---
-  # include       mime.types;
+  # --- FIX: Remove the types block ---
+  # types {
+  #   text/html     html;
+  #   text/css      css;
+  #   application/javascript js;
+  # }
   
-  # --- ADD the types explicitly ---
-  types {
-    text/html     html;
-    text/css      css;
-    application/javascript js;
-  }
-  # -----------------------------------
+  # --- FIX: Force the default type to text/html ---
+  default_type  text/html;
+  # -----------------------------------------------
 
-  default_type  application/octet-stream;
   sendfile      on;
   keepalive_timeout 65;
 
