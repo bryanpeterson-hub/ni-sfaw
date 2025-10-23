@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Updated Title -->
+    <title>NI Homepage Demo - Adaptive Website</title> 
+    <!-- Using Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Copied Styles from transportation.html -->
+    <style>
+        /* Custom NI colors */
+        :root {
+            --ni-blue: #044123; /* Updated */
+            --ni-green: #044123; /* Updated */
+            --ni-dark-blue: #044123; /* Updated color for footer */
+            --ni-light-gray: #f8f9fa;
+            --ni-finder-green: #009B65; /* New color for Solution Finder */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333333; /* Default text color */
+        }
+        .ni-bg-blue { background-color: var(--ni-blue); }
+        .ni-text-blue { color: var(--ni-blue); } /* New text color class */
+        .ni-bg-dark-blue { background-color: var(--ni-dark-blue); }
+        .ni-text-dark-blue { color: var(--ni-dark-blue); }
+        
+        .ni-bg-green { background-color: var(--ni-green); }
+        .ni-text-green { color: var(--ni-green); }
+        .ni-border-green { border-color: var(--ni-green); }
+        
+        .ni-bg-light-gray { background-color: var(--ni-light-gray); }
+        .ni-bg-finder-green { background-color: var(--ni-finder-green); } /* New class for Solution Finder */
+
+        /* Header link style */
+        .header-link {
+            @apply py-6 border-b-4 border-transparent font-medium; /* Tailwind layout classes */
+            color: #006B46; /* Set color explicitly */
+            @apply hover:border-b-4 hover:border-ni-green hover:text-black;
+        }
+        
+        /* Agent Message Container */
+        .agent-message-container {
+            display: flex;
+            align-items: flex-end; /* Align avatar with bottom of bubble */
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+        }
+
+        /* Agent Avatar */
+        .agent-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0; /* Prevent avatar from shrinking */
+        }
+
+        /* Chat bubble styles */
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            line-height: 1.4;
+            position: relative; 
+        }
+        .chat-bubble-agent {
+            background-color: #f0f4f8;
+            color: #1a202c;
+            border-bottom-left-radius: 0.25rem;
+            /* Removed align-self and margin-bottom as container handles it */
+        }
+        .chat-bubble-user {
+            background-color: var(--ni-blue);
+            color: white;
+            border-bottom-right-radius: 0.25rem;
+            align-self: flex-end; /* User bubbles still align right */
+            margin-bottom: 0.5rem; /* User bubbles still need margin */
+        }
+        
+        /* Chat options button styles */
+        .chat-option {
+            background-color: white;
+            border: 1px solid var(--ni-blue);
+            color: var(--ni-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            margin: 0.25rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .chat-option:hover {
+            background-color: var(--ni-blue);
+            color: white;
+        }
+
+        /* Typing indicator */
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #909090;
+            margin: 0 1px;
+            animation: typing-bounce 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing-bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+        
+        /* Pulsing button */
+        .pulse-button {
+            box-shadow: 0 0 0 0 rgba(0, 155, 101, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 155, 101, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(0, 155, 101, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 155, 101, 0);
+            }
+        }
+
+        /* Agent Joined Message Style */
+        .agent-joined-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        .agent-joined-message {
+            /* text-align: center; No longer needed */
+            font-size: 0.75rem; /* text-xs */
+            color: #6b7280; /* text-gray-500 */
+        }
+        .agent-joined-avatar {
+             width: 16px; /* Smaller avatar */
+             height: 16px;
+             border-radius: 50%;
+             margin-right: 4px; /* Space between avatar and text */
+        }
+        
+        /* Added for fade-in animation on content load */
+         @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+    </style>
+</head>
+<body class="bg-white">
+
+    <!--
+      HEADER: Copied from transportation.html
+    -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#">
+                        <img src="https://ni.scene7.com/is/image/ni/logo_2020?fmt=png-alpha" alt="NI Logo" class="h-8 w-auto">
+                    </a>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="hidden lg:flex lg:space-x-8">
+                    <a href="#" class="header-link">Solutions</a>
+                    <a href="#" class="header-link">Products</a>
+                    <a href="#" class="header-link">Industries</a>
+                    <a href="#" class="header-link">Shop</a>
+                    <a href="#" class="header-link">Support</a>
+                    <a href="#" class="header-link">Company</a>
+                </div>
+                
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-black">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button>
+                    <button class="text-gray-600 hover:text-black">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    </button>
+                    <button class="text-gray-600 hover:text-black">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </button>
+                    <!-- Hamburger Menu (Mobile) -->
+                    <button class="lg:hidden text-gray-600 hover:text-black">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--
+      PAGE CONTENT: Pasted from your prompt, integrated with styles
+    -->
+    <main>
+        <!-- 
+          HERO SECTION
+          (Personalized for Raj)
+        -->
+        <section id="hero-section" class="relative bg-white text-center">
+            <!-- Background Image -->
+            <img src="https://ni.scene7.com/is/image/ni/AdobeStock_383858917_1440x659?scl=1" alt="NI Hero" class="w-full h-[500px] object-cover">
+            
+            <!-- Overlay Content -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-30 p-8">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 shadow-lg" id="hero-headline">
+                    Accelerate Your EV Battery Validation
+                </h1>
+                <p class="text-lg md:text-xl text-white max-w-2xl mb-8 shadow-lg" id="hero-subhead">
+                    Design and deploy comprehensive test systems for every stage of the battery lifecycle, from R&D to production.
+                </p>
+                <a href="#" class="ni-bg-green text-white font-bold py-3 px-8 rounded-full text-lg hover:opacity-90 transition-opacity"> 
+                    Explore EV Test Solutions
+                </a>
+            </div>
+        </section>
+
+        <!-- Featured Solutions Section -->
+        <section class="py-16 ni-bg-light-gray">
+            <div class="container mx-auto px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-12">Test and Measurement Solutions</h2> 
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Solution 1: Personalized for EV -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden border-2 ni-border-green">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">EV Battery Test</h3> 
+                            <p class="ni-text-blue mb-4">Validate performance and reliability for all your battery test needs.</p> <!-- Applied ni-text-blue -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Applied ni-text-blue -->
+                        </div>
+                    </div>
+                    <!-- Solution 2 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">Semiconductor Test</h3> 
+                            <p class="ni-text-blue mb-4">Lower the cost of test for RF, mixed-signal, and MEMS devices.</p> <!-- Applied ni-text-blue -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Applied ni-text-blue -->
+                        </div>
+                    </div>
+                    <!-- Solution 3 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">Wireless Research (6G)</h3> 
+                            <p class="ni-text-blue mb-4">Rapidly prototype and validate next-generation wireless systems.</p> <!-- Applied ni-text-blue -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Applied ni-text-blue -->
+                        </div>
+                    </div>
+                    <!-- Solution 4 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">Autonomous Driving</h3> 
+                            <p class="ni-text-blue mb-4">Validate your ADAS and AD systems with open, data-driven test.</p> <!-- Applied ni-text-blue -->
+                            <a href="#" class="font-medium ni-text-blue hover:underline">Learn More &rarr;</a> <!-- Applied ni-text-blue -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Case Study Section (Personalized) -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center bg-gray-50 rounded-lg shadow-xl overflow-hidden">
+                    <div class="w-full md:w-1/2">
+                        <img src="https://cf-images.us-east-1.prod.boltdns.net/v1/static/1326282160001/dd23ea4c-eb09-42db-9420-b63b621356f1/caf1bda9-861c-42cf-b6a3-ac2d57b47f3c/1280x720/match/image.jpg" alt="Automotive OEM" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 p-8 md:p-12">
+                        <h3 class="text-sm font-bold uppercase ni-text-green mb-2">Customer Success Story</h3> <!-- Note: --ni-green is now #044123 -->
+                        <h2 class="text-3xl font-bold mb-4">How a Major Auto OEM Validates Battery Packs with NI</h2> 
+                        <p class="text-lg ni-text-blue mb-6">See how our PXI-based systems and regenerative cyclers helped a leading automaker reduce battery validation test time by 30% and accelerate their time-to-market.</p> <!-- Applied ni-text-blue -->
+                        <a href="#" class="ni-bg-blue text-white font-bold py-3 px-6 rounded-full text-base hover:opacity-90 transition-opacity">
+                            Read the Case Study
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Other NI Content -->
+        <section class="py-16 ni-bg-light-gray">
+            <div class="container mx-auto px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-12">Explore Our Products</h2> 
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Product 1 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-3">PXI Platform</h3> 
+                        <p class="ni-text-blue">A modular, high-performance platform for automated test and measurement.</p> <!-- Applied ni-text-blue -->
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-3">LabVIEW</h3> 
+                        <p class="ni-text-blue">A graphical programming environment for test, measurement, and control.</p> <!-- Applied ni-text-blue -->
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-3">TestStand</h3> 
+                        <p class="ni-text-blue">Ready-to-run test management software for test sequence development.</p> <!-- Applied ni-text-blue -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!--
+      FOOTER: Copied from transportation.html
+    -->
+     <footer class="ni-bg-dark-blue text-[#32EB96] pt-16 pb-8"> <!-- Updated bg and text color -->
+        <div class="container mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+                <!-- Column 1 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">PRODUCTS</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:underline">PXI</a></li>
+                        <li><a href="#" class="hover:underline">LabVIEW</a></li>
+                        <li><a href="#" class="hover:underline">TestStand</a></li>
+                        <li><a href="#" class="hover:underline">Data Acquisition (DAQ)</a></li>
+                        <li><a href="#" class="hover:underline">Software Defined Radios</a></li>
+                    </ul>
+                </div>
+                <!-- Column 2 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">INDUSTRIES</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:underline">Aerospace and Defense</a></li>
+                        <li><a href="#" class="hover:underline">Automotive</a></li>
+                        <li><a href="#" class="hover:underline">Semiconductor</a></li>
+                        <li><a href="#" class="hover:underline">Electronics</a></li>
+                        <li><a href="#" class="hover:underline">Government</a></li>
+                    </ul>
+                </div>
+                <!-- Column 3 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">SUPPORT</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:underline">Drivers</a></li>
+                        <li><a href="#" class="hover:underline">Manuals</a></li>
+                        <li><a href="#" class="hover:underline">Contact Support</a></li>
+                        <li><a href="#" class="hover:underline">Product Lifecycle</a></li>
+                    </ul>
+                </div>
+                <!-- Column 4 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">COMPANY</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:underline">About NI</a></li>
+                        <li><a href="#" class="hover:underline">Careers</a></li>
+                        <li><a href="#" class="hover:underline">Investor Relations</a></li>
+                        <li><a href="#" class="hover:underline">Newsroom</a></li>
+                    </ul>
+                </div>
+                <!-- Column 5 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">NI Community</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:underline">Discussion Forums</a></li>
+                        <li><a href="#" class="hover:underline">NI Community Home</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-t border-[#32EB96] opacity-30 my-8"> <!-- Updated hr border color -->
+            <div class="flex flex-col md:flex-row justify-between items-center text-sm text-[#32EB96] opacity-70"> <!-- Updated text color and opacity -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="#" class="hover:underline">Legal</a>
+                    <a href="#" class="hover:underline">Privacy</a>
+                    <a href="#" class="hover:underline">Cookie Policy</a>
+                </div>
+                <p>&copy; 2025 National Instruments. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 
+      AGENTIC INITIATION COMPONENT: Copied from transportation.html
+    -->
+    <div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50">
+        <button onclick="startDemo()" class="pulse-button ni-bg-finder-green text-white font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center">
+            <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            NI Solution Finder
+        </button>
+    </div>
+
+    <!-- 
+      DEMO CONTAINER: Copied from transportation.html
+    -->
+    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center p-4 md:p-8">
+        <div class="flex flex-col h-[60vh] w-full md:w-1/4 max-w-md bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto">
+            
+            <!-- Chat Panel -->
+            <div class="w-full flex flex-col h-full">
+                <div class="p-4 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold ni-text-blue">NI Solution Finder</h2>
+                    <p class="text-sm text-gray-600">Powered by Agentforce</p>
+                </div>
+                
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
+                    <!-- Messages will be injected here by JS -->
+                </div>
+                
+                <!-- Chat Options -->
+                <div id="chat-options" class="p-4 bg-gray-50 flex flex-wrap justify-center">
+                    <!-- Options will be injected here by JS -->
+                </div>
+
+                <!-- Text Input Bar -->
+                <div id="chat-input-bar" class="p-4 bg-white border-t border-gray-200">
+                    <form id="chat-form" class="flex space-x-3">
+                        <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border-gray-300 rounded-full shadow-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-ni-blue" autocomplete="off">
+                        <button type="submit" class="ni-bg-blue text-white rounded-full p-0 w-10 h-10 flex items-center justify-center flex-shrink-0 hover:opacity-90">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transform: rotate(90deg);">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Close Button -->
+            <button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black z-10">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- 
+      DEMO JAVASCRIPT: Copied from transportation.html
+      (Includes personalization logic for this specific page)
+    -->
+    <script>
+        // --- Demo State Management ---
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.getElementById('chat-options');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const agentAvatarUrl = 'https://www.ni.com/favicon-32x32.png'; // Agent avatar URL
+        const heroHeadline = document.getElementById('hero-headline'); // Added for personalization
+        const heroSubhead = document.getElementById('hero-subhead'); // Added for personalization
+        
+        // --- Demo Flow Logic ---
+        
+        function startDemo() {
+            // Show the modal
+            document.getElementById('solution-finder-trigger').classList.add('hidden');
+            document.getElementById('demo-container').classList.remove('hidden');
+            
+            runStep(1); // Start the demo flow
+        }
+        
+        function resetDemo() {
+            // Hide the modal and show the button again
+            document.getElementById('demo-container').classList.add('hidden');
+            document.getElementById('solution-finder-trigger').classList.remove('hidden');
+            
+            // Clear the demo state
+            chatMessages.innerHTML = '';
+            chatOptions.innerHTML = '';
+            chatInput.value = ''; // Clear text input
+            
+             // Reset the hero to its personalized state for this page
+            initializePersonalization(); // Call personalization again on reset
+        }
+
+        // --- Get current time for timestamp ---
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        }
+        
+        // --- NEW: Add Agent Joined Message with Avatar ---
+        function addAgentJoinedMessage() {
+            const container = document.createElement('div');
+            container.className = 'agent-joined-container';
+
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl;
+            avatar.alt = "Agent Avatar";
+            avatar.className = 'agent-joined-avatar'; // Use smaller avatar style
+            container.appendChild(avatar);
+
+            const joinedMsg = document.createElement('div');
+            joinedMsg.className = 'agent-joined-message';
+            joinedMsg.innerHTML = `NI Solution Finder joined • ${getCurrentTime()}`;
+            container.appendChild(joinedMsg);
+            
+            chatMessages.appendChild(container); // Append container
+            scrollToBottom();
+        }
+
+        // --- New "Typing" Simulation with Avatar and Timestamp ---
+        function typeAgentMessage(fullText, onComplete) {
+            const container = document.createElement('div');
+            container.className = 'agent-message-container';
+
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl;
+            avatar.alt = "Agent Avatar";
+            avatar.className = 'agent-avatar'; // Avatar is visible immediately
+            container.appendChild(avatar);
+
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-agent';
+            container.appendChild(msg);
+            
+            const contentDiv = document.createElement('div'); // Div for text content
+            
+            // Add typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            contentDiv.appendChild(typingIndicator);
+            msg.appendChild(contentDiv);
+            chatMessages.appendChild(container); // Append container
+            scrollToBottom();
+
+            let i = 0;
+            const typingSpeed = 30; // Milliseconds per character
+
+            function typeChar() {
+                if (i < fullText.length) {
+                    // Replace indicator with text
+                    if (i === 0) {
+                        contentDiv.innerHTML = ''; // Clear indicator
+                    }
+                    contentDiv.innerHTML += fullText.charAt(i);
+                    i++;
+                    scrollToBottom();
+                    setTimeout(typeChar, typingSpeed);
+                } else {
+                    // Typing complete, add timestamp
+                    // Avatar is already visible
+                    const timestampSpan = document.createElement('span');
+                    timestampSpan.className = 'block text-xs text-gray-500 mt-1';
+                    timestampSpan.textContent = getCurrentTime();
+                    msg.appendChild(timestampSpan);
+                    scrollToBottom();
+
+                    if (onComplete) {
+                        onComplete();
+                    }
+                }
+            }
+            
+            // Start typing after a short delay
+            setTimeout(typeChar, 1000);
+        }
+
+        // --- Updated message functions with Avatar and Timestamp ---
+        function addAgentMessage(text) {
+            const container = document.createElement('div');
+            container.className = 'agent-message-container';
+
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl;
+            avatar.alt = "Agent Avatar";
+            avatar.className = 'agent-avatar';
+            container.appendChild(avatar);
+
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-agent';
+            
+            const contentDiv = document.createElement('div'); // Div for text content
+            contentDiv.innerHTML = text;
+            msg.appendChild(contentDiv);
+
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'block text-xs text-gray-500 mt-1';
+            timestampSpan.textContent = getCurrentTime();
+            msg.appendChild(timestampSpan);
+
+            container.appendChild(msg);
+            chatMessages.appendChild(container); // Append container
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            // User message remains the same (no avatar)
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-user';
+            
+            const contentDiv = document.createElement('div'); // Div for text content
+            contentDiv.innerHTML = text;
+            msg.appendChild(contentDiv);
+
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'block text-xs text-white opacity-70 mt-1'; // Adjusted color for user bubble
+            timestampSpan.textContent = getCurrentTime();
+            msg.appendChild(timestampSpan);
+
+            chatMessages.appendChild(msg);
+            scrollToBottom();
+        }
+
+        function showOptions(options) {
+            chatOptions.innerHTML = ''; // Clear old options
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-option';
+                btn.innerHTML = option.text;
+                btn.onclick = () => handleOption(option.nextStep, option.text);
+                chatOptions.appendChild(btn);
+            });
+        }
+        
+        function handleOption(nextStep, userText) {
+            // Get the text of the button that was clicked
+            addUserMessage(userText);
+            
+            // Disable options after selection
+            chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
+            
+            // Run the next step after a short delay
+            setTimeout(() => {
+                runStep(nextStep);
+            }, 1200);
+        }
+
+        // --- NEW: Handle Text Input ---
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const text = chatInput.value.trim();
+            
+            if (!text) return; // Do nothing if input is empty
+            
+            addUserMessage(text);
+            chatInput.value = '';
+            
+            // Clear buttons, as text input overrides them
+            chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
+            
+            // Simulate a canned response to guide user back to button flow
+            setTimeout(() => {
+                addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
+                // Go back to the main options
+                runStep(99); 
+            }, 1200);
+        }
+        
+        // Add event listener for the new form
+        chatForm.addEventListener('submit', handleFormSubmit);
+        
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // --- DEMO SCRIPT (Using the same chat flow as transportation.html for now) ---
+         function runStep(step) {
+            switch (step) {
+                case 1: // Agent Intro Sequence
+                    addAgentJoinedMessage(); // Add "Agent Joined" message first
+                    
+                    setTimeout(() => { // Wait before typing greeting
+                        // Slightly updated greeting for the homepage context
+                        const greeting = "Hi! I'm your NI Solution Finder Agent. I see you're interested in EV Battery Validation. I can help match your needs to solutions, products, or connect you with a sales rep. How can I help you today?";
+                        typeAgentMessage(greeting, () => {
+                            // This runs after typing is complete
+                            showOptions([
+                                { text: 'Tell me about EV Test', nextStep: 30 }, // Go direct to EV
+                                { text: 'Show related products', nextStep: 3 }, // Go direct to Products
+                                { text: 'Connect me to a Sales Rep', nextStep: 10 }
+                            ]);
+                        });
+                    }, 1000); // 1 second delay
+                    break;
+                
+                // --- PATH 1: Industry Solutions ---
+                // (Steps 2, 20, 21 are skipped in this flow as we start with EV focus)
+                
+                // --- PATH 2: Products ---
+                case 3: 
+                    addAgentMessage("Based on your interest in EV Battery Test, the most relevant products are our PXI Platform and specialized hardware like Battery Cyclers.");
+                    setTimeout(() => {
+                         addAgentMessage("Which would you like to know more about?");
+                        showOptions([
+                            { text: 'PXI Platform', nextStep: 40 },
+                            { text: 'Battery Cyclers', nextStep: 32 }, // Jump to Cycler specs
+                            { text: 'Back to start', nextStep: 99 }
+                        ]);
+                    }, 1000);
+                    break;
+                
+                case 40: // User chooses PXI
+                    addAgentMessage("PXI is our modular, high-performance platform for automated test and measurement. It's the foundation for our EV test solutions.");
+                    setTimeout(() => {
+                        addAgentMessage("Would you like to explore PXI hardware details, or see the EV Battery Cycler that runs on PXI?");
+                        showOptions([
+                            { text: 'Show PXI hardware', nextStep: 42 },
+                            { text: 'Show EV Battery Cycler', nextStep: 32 },
+                            { text: 'Back to start', nextStep: 99 }
+                        ]);
+                    }, 1000);
+                    break;
+                
+                 // --- SUB-PATHS & ENDPOINTS ---
+                
+                case 30: // EV Test Info
+                    addAgentMessage("Our EV Test solutions cover everything from battery and inverter test to ADAS validation. A key product is our High-Voltage Battery Cycler.");
+                    setTimeout(() => {
+                        addAgentMessage("I can give you the specs for that, show you a case study, or connect you with a sales rep.");
+                         showOptions([
+                            { text: 'Show Cycler Specs', nextStep: 32 },
+                            { text: 'Show me a case study', nextStep: 31 }, // Added case study option
+                            { text: 'Connect me to Sales', nextStep: 10 },
+                            { text: 'Back to start', nextStep: 99 }
+                        ]);
+                    }, 1000);
+                    break;
+                
+                case 31: // Show Case Study (BMW)
+                    addAgentMessage("Okay, here is a case study about how the BMW Group is using our digital twin solutions for EV development.");
+                    setTimeout(() => {
+                        // Render a "card" inside the chat
+                        const caseStudyHTML = `
+                            <div class="p-3 bg-white rounded-lg border border-gray-200">
+                                <img src="https://ni.scene7.com/is/image/ni/AdobeStock_236859072_logo_539x399?scl=1" alt="BMW Group" class="w-full h-32 object-cover rounded mb-2">
+                                <h4 class="font-semibold text-gray-900">Shifting Left in Validation</h4>
+                                <p class="text-sm text-gray-700">The BMW Group is using a digital twin approach to identify design weaknesses earlier.</p>
+                                <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Read the full story &rarr;</a>
+                            </div>
+                        `;
+                        addAgentMessage(caseStudyHTML);
+                    }, 500);
+                    setTimeout(() => {
+                        addAgentMessage("Would you like to see product specs or talk to sales?");
+                        showOptions([
+                            { text: 'Show Cycler Specs', nextStep: 32 },
+                            { text: 'Connect me to Sales', nextStep: 10 },
+                            { text: 'Back to start', nextStep: 99 }
+                        ]);
+                    }, 1500);
+                    break;
+                
+                case 32: // Show Cycler Specs
+                    addAgentMessage("Here are the key specs for the HV-1200 Battery Cycler:");
+                     setTimeout(() => {
+                        const specsHTML = `
+                            <div class="p-3 bg-white rounded-lg border border-gray-200">
+                                <h4 class="font-semibold ni-text-blue">HV-1200 Battery Cycler</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 mt-2">
+                                    <li>Up to 1200 V per channel</li>
+                                    <li>Up to 600 A per channel</li>
+                                    <li>Regenerative power</li>
+                                    <li>PXI-based for easy integration</li>
+                                </ul>
+                            </div>
+                        `;
+                        addAgentMessage(specsHTML);
+                    }, 500);
+                     setTimeout(() => {
+                        addAgentMessage("This requires careful configuration. I recommend speaking with a sales rep.");
+                        showOptions([
+                            { text: 'Connect me to Sales', nextStep: 10 },
+                            { text: 'Back to start', nextStep: 99 }
+                        ]);
+                    }, 1500);
+                    break;
+
+                case 42: // Show PXI Hardware
+                    addAgentMessage("Here are some of our most popular PXI product categories:");
+                     setTimeout(() => {
+                        const pxiHTML = `
+                            <div class="p-3 bg-white rounded-lg border border-gray-200">
+                                <h4 class="font-semibold ni-text-blue">PXI Product Families</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 mt-2">
+                                    <li><b>Chassis:</b> The backbone of your system.</li>
+                                    <li><b>Controllers:</b> Embedded or remote control.</li>
+                                    <li><b>Modules:</b> Hundreds of modules for I/O, instrumentation, and timing.</li>
+                                </ul>
+                                <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Browse all PXI hardware &rarr;</a>
+                            </div>
+                        `;
+                        addAgentMessage(pxiHTML);
+                    }, 500);
+                     setTimeout(() => {
+                        addAgentMessage("Building a PXI system is best done with an expert. Can I connect you with a sales rep?");
+                        showOptions([
+                            { text: 'Yes, connect me', nextStep: 10 },
+                            { text: 'Back to start', nextStep: 99 }
+                        ]);
+                    }, 1500);
+                    break;
+                
+                // Demo Link Step (43) is not reachable in this flow
+                
+                // --- PATH 3: Connect Sales Rep ---
+                case 10: 
+                    addAgentMessage("Great! Connecting you with a sales rep is the best way to get a configured solution. I just need a few details.");
+                    setTimeout(() => {
+                        addAgentMessage("Please enter your name, company, and email below. <br><br> <i>[Demo: Form would appear here]</i>");
+                    }, 1000);
+                     setTimeout(() => {
+                        // Simulate form fill
+                        const formHTML = `
+                            <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 text-sm">
+                                <p><b>Name:</b> Raj Singh</p>
+                                <p><b>Company:</b> Tier 1 Automotive</p>
+                                <p><b>Email:</b> raj.singh@tier1-auto.com</p>
+                            </div>
+                        `;
+                        addUserMessage(formHTML);
+                    }, 3000);
+                     setTimeout(() => {
+                        addAgentMessage("Thank you, Raj! A sales representative will reach out to you at <strong>raj.singh@tier1-auto.com</strong> within one business day.");
+                        addAgentMessage("Is there anything else I can help you with?");
+                        showOptions([
+                            { text: 'Start Over', nextStep: 99 },
+                            { text: 'No, I\'m done', nextStep: 100 }
+                        ]);
+                    }, 4000);
+                    break;
+                
+                // --- ENDING PATHS ---
+                case 99: // Back to start (Revised for this page)
+                    addAgentMessage("Okay, what else can I help you with?");
+                    showOptions([
+                         { text: 'Tell me about EV Test', nextStep: 30 }, 
+                         { text: 'Show related products', nextStep: 3 }, 
+                         { text: 'Connect me to a Sales Rep', nextStep: 10 }
+                    ]);
+                    break;
+                
+                case 100: // All done
+                    addAgentMessage("Thank you for using the NI Solution Finder! Have a great day. (You can close this window by clicking the 'X')");
+                    chatOptions.innerHTML = `<button onclick="resetDemo()" class="chat-option bg-gray-200">Reset Demo</button>`;
+                    break;
+            }
+        }
+        
+        // --- Page Personalization Logic (Copied from previous index.html) ---
+        function initializePersonalization() {
+            // In a real demo, this data would come from Data Cloud
+            const userProfile = {
+                name: "Raj",
+                industry: "Automotive",
+                interest: "EV Battery Test"
+            };
+
+            // Personalize Hero
+            heroHeadline.textContent = 'Accelerate Your EV Battery Validation';
+            heroSubhead.textContent = 'Design and deploy comprehensive test systems for every stage of the battery lifecycle, from R&D to production.';
+            
+            // In a real app, we would also swap the case studies and solution blocks.
+            // For this hard-coded demo, they are already set to the "personalized" state.
+        }
+
+        // Run personalization when the page loads
+        document.addEventListener('DOMContentLoaded', initializePersonalization);
+        
+    </script>
+
+</body>
+</html>
