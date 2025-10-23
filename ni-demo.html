@@ -148,11 +148,22 @@
         }
 
         /* Agent Joined Message Style */
+        .agent-joined-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
         .agent-joined-message {
-            text-align: center;
+            /* text-align: center; No longer needed */
             font-size: 0.75rem; /* text-xs */
             color: #6b7280; /* text-gray-500 */
-            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        .agent-joined-avatar {
+             width: 16px; /* Smaller avatar */
+             height: 16px;
+             border-radius: 50%;
+             margin-right: 4px; /* Space between avatar and text */
         }
 
     </style>
@@ -538,7 +549,7 @@
 
     <!-- 
       NEW CHAT-ONLY DEMO JAVASCRIPT
-      Updated to include avatars and "Joined" message
+      Updated to include avatars and "Joined" message timing
     -->
     <script>
         // --- Demo State Management ---
@@ -574,12 +585,23 @@
             return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
         }
         
-        // --- NEW: Add Agent Joined Message ---
+        // --- NEW: Add Agent Joined Message with Avatar ---
         function addAgentJoinedMessage() {
+            const container = document.createElement('div');
+            container.className = 'agent-joined-container';
+
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl;
+            avatar.alt = "Agent Avatar";
+            avatar.className = 'agent-joined-avatar'; // Use smaller avatar style
+            container.appendChild(avatar);
+
             const joinedMsg = document.createElement('div');
             joinedMsg.className = 'agent-joined-message';
             joinedMsg.innerHTML = `NI Solution Finder joined • ${getCurrentTime()}`;
-            chatMessages.appendChild(joinedMsg);
+            container.appendChild(joinedMsg);
+            
+            chatMessages.appendChild(container); // Append container
             scrollToBottom();
         }
 
@@ -591,7 +613,7 @@
             const avatar = document.createElement('img');
             avatar.src = agentAvatarUrl;
             avatar.alt = "Agent Avatar";
-            avatar.className = 'agent-avatar invisible'; // Start invisible
+            avatar.className = 'agent-avatar'; // Avatar is visible immediately
             container.appendChild(avatar);
 
             const msg = document.createElement('div');
@@ -623,8 +645,8 @@
                     scrollToBottom();
                     setTimeout(typeChar, typingSpeed);
                 } else {
-                    // Typing complete, add timestamp and show avatar
-                    avatar.classList.remove('invisible'); // Show avatar
+                    // Typing complete, add timestamp
+                    // Avatar is already visible
                     const timestampSpan = document.createElement('span');
                     timestampSpan.className = 'block text-xs text-gray-500 mt-1';
                     timestampSpan.textContent = getCurrentTime();
