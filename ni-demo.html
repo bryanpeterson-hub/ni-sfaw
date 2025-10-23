@@ -63,6 +63,7 @@
             border-radius: 1rem;
             line-height: 1.4;
             position: relative; 
+            /* Inherit font size from body by default */
         }
         .chat-bubble-agent {
             background-color: #f0f4f8;
@@ -89,6 +90,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s ease;
+             /* Inherit font size */
         }
         .chat-option:hover {
             background-color: var(--ni-blue);
@@ -106,6 +108,7 @@
              font-weight: 500; /* font-medium */
              text-decoration: none;
              transition: background-color 0.2s ease;
+             /* Removed explicit font-size, will inherit from .chat-bubble */
         }
         .cta-button:hover {
             opacity: 0.9;
@@ -586,14 +589,14 @@
                     if (i === 0) contentDiv.innerHTML = ''; 
                     contentDiv.innerHTML += fullText.charAt(i);
                     i++;
-                    scrollToBottom();
+                    scrollToBottom(); // Scroll as text appears
                     setTimeout(typeChar, typingSpeed);
                 } else {
                     const timestampSpan = document.createElement('span');
                     timestampSpan.className = 'block text-xs text-gray-500 mt-1';
                     timestampSpan.textContent = getCurrentTime();
                     msg.appendChild(timestampSpan);
-                    scrollToBottom();
+                    scrollToBottom(); // Scroll after timestamp
                     // Execute the callback *after* timestamp is added
                     if (onComplete) {
                         // Use a tiny delay to ensure rendering before next action
@@ -640,16 +643,15 @@
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-agent';
             const contentDiv = document.createElement('div'); 
-             // Add the main text only if it's provided
             if (text && text.trim().length > 0) {
                  contentDiv.innerHTML = text; 
             }
             const ctaLinkElement = document.createElement('a');
             ctaLinkElement.href = ctaLink;
-            ctaLinkElement.textContent = ctaText;
+            // Updated CTA Button Text
+            ctaLinkElement.textContent = "EV Battery Testing Solutions"; 
             ctaLinkElement.className = 'cta-button'; 
             ctaLinkElement.target = "_self"; 
-            // Add line break if text exists, otherwise button is directly inside
             if (text && text.trim().length > 0) {
                  contentDiv.appendChild(document.createElement('br')); 
             }
@@ -681,21 +683,27 @@
 
         // --- Show Buttons ---
         function showOptions(options) {
-            chatOptions.innerHTML = ''; 
-            options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.className = 'chat-option';
-                btn.innerHTML = option.text;
-                btn.onclick = () => handleOption(option.nextStep, option.text); 
-                chatOptions.appendChild(btn);
-            });
+            // Ensure chat scrolls fully before adding buttons
+            scrollToBottom(); 
+            // Small delay to ensure scroll finishes before adding buttons
+            setTimeout(() => {
+                chatOptions.innerHTML = ''; 
+                options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-option';
+                    btn.innerHTML = option.text;
+                    btn.onclick = () => handleOption(option.nextStep, option.text); 
+                    chatOptions.appendChild(btn);
+                });
+                 // Scroll again after adding buttons
+                 scrollToBottom();
+            }, 100); 
         }
         
         // --- Handle Button Clicks ---
         function handleOption(nextStep, userText) { 
             addUserMessage(userText);
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
-            // Removed special handling for step 1, now only advances to nextStep
             setTimeout(() => { runStep(nextStep); }, 1200);
         }
 
@@ -708,19 +716,12 @@
             chatInput.value = '';
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             
-            // If the user types after the initial greeting (step 1), trigger the agent response sequence
             if (currentStep === 1) { 
-                 setTimeout(() => {
-                     runStep(1.5); // Start the agent's response sequence
-                 }, 1200);
+                 setTimeout(() => { runStep(1.5); }, 1200);
             } else { 
-                 // Otherwise, give the canned "use buttons" response
                  setTimeout(() => {
                     addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
-                    // Re-show options relevant to the *previous* agent message (before user typed)
-                    // This requires knowing the previous step or options, which is tricky.
-                    // For simplicity, let's just go back to the main challenge options (step 1.6 options)
-                    runStep(99); // Go back to the main options after canned response
+                    runStep(99); 
                  }, 1200);
             }
         }
@@ -728,31 +729,27 @@
         chatForm.addEventListener('submit', handleFormSubmit);
         
         function scrollToBottom() {
+            // Scroll the chat messages div to the bottom
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         // --- UPDATED DEMO SCRIPT ---
         function runStep(step) {
-            currentStep = step; // Update global step tracker
+            currentStep = step; 
 
             switch (step) {
                 case 1: // Agent Intro Sequence - Waits for user input
                     addAgentJoinedMessage(); 
                     setTimeout(() => { 
                         const greeting = "Hi! I'm your NI Solution Finder Agent. I can help match your needs to one of our NI Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
-                        // Type the message, then wait for user input (handleFormSubmit)
                         typeAgentMessage(greeting); 
-                        // No onComplete, no automatic next step, no buttons shown here.
                     }, 1000); 
                     break;
 
                 case 1.5: // Agent Response with CTA (Triggered by user input/button after step 1)
                     const ctaIntro = "Great, I can help with exploring our EV battery test solutions. Here's where you can find more information:";
                     typeAgentMessage(ctaIntro, () => {
-                         // Add CTA button *after* typing finishes
-                         // Pass empty string for text part of CTA message
-                         addCTAMessage("", "EV Battery Test Page", "https://ni-adaptive-website-demo-edd7ba489258.herokuapp.com/battery.html"); 
-                         // Trigger next agent message after CTA appears
+                         addCTAMessage("", "EV Battery Testing Solutions", "https://ni-adaptive-website-demo-edd7ba489258.herokuapp.com/battery.html"); 
                          runStep(1.6); 
                     });
                     break;
