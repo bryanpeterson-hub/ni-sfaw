@@ -166,6 +166,24 @@
             animation: fadeIn 0.5s ease-out;
         }
 
+        /* NEW: Datasheet button style */
+        .datasheet-button {
+            display: inline-block;
+            border: 1px solid var(--ni-blue);
+            color: var(--ni-blue);
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            margin-top: 0.75rem; /* Increased margin */
+            font-size: 0.75rem; /* text-xs */
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .datasheet-button:hover {
+            background-color: var(--ni-blue);
+            color: white;
+        }
+
     </style>
 </head>
 <body class="bg-white">
@@ -287,20 +305,9 @@
             <!-- Recommendations Panel: Initial narrow width, transitions added -->
             <div id="recommendations-panel" class="w-1/2 border-r border-gray-200 p-4 overflow-y-auto transition-all duration-500 ease-out transform -translate-x-full bg-gray-50">
                 <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2">Recommendations</h3>
-                <!-- Initial Content: Original 2 items -->
+                <!-- Content div -->
                  <div id="recommendations-content">
-                    <div class="mb-6 animate-fade-in">
-                        <img src="https://ni.scene7.com/is/image/ni/AdobeStock_109562868_690x368?scl=1" alt="EV Battery Test" class="w-full h-32 object-cover rounded mb-2 shadow">
-                        <h4 class="font-semibold text-gray-800">Electric Vehicle Battery Test</h4>
-                        <p class="text-sm ni-text-blue mb-1">Explore solutions for battery validation across the entire lifecycle.</p>
-                        <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
-                    </div>
-                    <div class="mb-4 animate-fade-in" style="animation-delay: 0.2s;">
-                        <img src="https://ni.scene7.com/is/image/ni/Triphase_04_690x368?scl=1" alt="High Power EV Test" class="w-full h-32 object-cover rounded mb-2 shadow">
-                        <h4 class="font-semibold text-gray-800">High Power Electric Vehicle Test</h4>
-                        <p class="text-sm ni-text-blue mb-1">Test high-voltage components like inverters, onboard chargers, and DC fast chargers.</p>
-                        <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
-                    </div>
+                    <!-- Initial Content Populated by JS -->
                 </div>
             </div>
 
@@ -341,7 +348,7 @@
     </div>
 
     <!-- 
-      DEMO JAVASCRIPT: Updated timing and introduced showSpecsAndUpdateRecs
+      DEMO JAVASCRIPT: Updated step logic
     -->
     <script>
         // --- Demo State Management ---
@@ -363,6 +370,7 @@
         function startDemo() {
             document.getElementById('solution-finder-trigger').classList.add('hidden');
             document.getElementById('demo-container').classList.remove('hidden');
+            recommendationsContent.innerHTML = getInitialRecommendationsHTML(); // Set initial recs
             runStep(1.5); 
             resetPanelWidths(); 
             setTimeout(() => { recommendationsPanel.classList.remove('-translate-x-full'); }, 300); 
@@ -511,7 +519,7 @@
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             if (currentStep === 1.6) {
                  updateRecommendationsAndContinueChat(); 
-            } else if (currentStep === 2) { // NEW Check for step 2
+            } else if (currentStep === 2) { 
                  showSpecsAndFinalRecs(); 
             } else { 
                  setTimeout(() => { runStep(nextStep); }, 1200);
@@ -529,13 +537,14 @@
             
              if (currentStep === 1.6) { 
                  updateRecommendationsAndContinueChat(); 
-             } else if (currentStep === 2) { // NEW Check for step 2
+             } else if (currentStep === 2) { 
                  showSpecsAndFinalRecs(); 
              } else { 
                  setTimeout(() => {
                     addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
-                    if (currentStep >= 32) runStep(99); // If past specs, show meeting options
-                    else if (currentStep >= 1.6) runStep(1.6); // Else, show challenge options again? Or just pause? (Keeping pause for now)
+                    if (currentStep >= 32) runStep(99); 
+                    else if (currentStep >= 2) runStep(2); // If user types during pause after step 2, maybe just wait? Or re-offer options? Re-offering step 2 options for now.
+                    else if (currentStep >= 1.6) runStep(1.6); 
                  }, 1200);
              }
         }
@@ -548,6 +557,7 @@
 
         // --- Helper Functions for Recommendation HTML ---
         function getInitialRecommendationsHTML() {
+            // Returns HTML for the first 2 recommendations
             return `
                 <div class="mb-6 animate-fade-in"> <img src="https://ni.scene7.com/is/image/ni/AdobeStock_109562868_690x368?scl=1" alt="EV Battery Test" class="w-full h-32 object-cover rounded mb-2 shadow"> <h4 class="font-semibold text-gray-800">Electric Vehicle Battery Test</h4> <p class="text-sm ni-text-blue mb-1">Explore solutions for battery validation across the entire lifecycle.</p> <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
                 <div class="mb-4 animate-fade-in" style="animation-delay: 0.2s;"> <img src="https://ni.scene7.com/is/image/ni/Triphase_04_690x368?scl=1" alt="High Power EV Test" class="w-full h-32 object-cover rounded mb-2 shadow"> <h4 class="font-semibold text-gray-800">High Power Electric Vehicle Test</h4> <p class="text-sm ni-text-blue mb-1">Test high-voltage components like inverters, onboard chargers, and DC fast chargers.</p> <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
@@ -555,6 +565,7 @@
         }
 
         function getUpdatedRecommendationsHTML() {
+             // Returns HTML for the 4 recommendations
             return `
                 <div class="grid grid-cols-2 gap-4">
                     <div class="mb-4 animate-fade-in bg-white p-3 rounded shadow"> <img src="https://ni.scene7.com/is/image/ni/9300-high-voltage-battery-test-system-front-left-2022_480x256?scl=1" alt="High Voltage DC Cycler" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">High-Voltage DC Cycler and Emulator</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">Offers modular, regenerative battery pack test systems with a power range spanning from 100 kW to 2.4 MW.</p> <a href="#" class="text-xs font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
@@ -564,16 +575,59 @@
                 </div>
             `;
         }
-         //--- NEW: Helper Function for Specs Recommendations ---
+        
          function getSpecsRecommendationsHTML() {
+              // Returns HTML for the final 3 recommendations (specs)
              return `
+                 <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2">Technical High-Voltage Battery Test System Highlights</h3>
                  <div class="space-y-4"> 
-                     <div class="animate-fade-in bg-white p-3 rounded shadow"> <img src="https://ni.scene7.com/is/image/ni/2549624_nhr_9300_high_voltage_battery_test_system_960x540?fmt=png-alpha&scl=1" alt="NHR-9300" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">NHR-9300 High-Voltage Battery Test System</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">High-voltage battery test system designed for electric vehicles (EV), renewable energy storage, and critical power applications.</p> <a href="#" class="text-xs font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
-                     <div class="animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.1s;"> <img src="https://ni.scene7.com/is/image/ni/NI_ERS_BIC_960x540?fmt=png-alpha&scl=1" alt="ERS-BIC" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">ERS-BIC Bidirectional DC Power Supply</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">High-performance bidirectional DC source and load based on silicon carbide (SiC) technology.</p> <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
-                     <div class="animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.2s;"> <img src="https://ni.scene7.com/is/image/ni/NI_HPS_17000_16x9?fmt=png-alpha&scl=1" alt="HPS-17000" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">HPS-17000 Battery Cycler and Emulator</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">Test and validate EV battery packs up to 1,500 volts with low- and high-voltage modes.</p> <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
+                     <div class="animate-fade-in bg-white p-3 rounded shadow flex flex-col"> 
+                         <img src="https://ni.scene7.com/is/image/ni/2549624_nhr_9300_high_voltage_battery_test_system_960x540?fmt=png-alpha&scl=1" alt="NHR-9300" class="w-full h-24 object-contain rounded mb-2"> 
+                         <h4 class="font-semibold text-gray-800 text-sm mt-auto">NHR-9300</h4> 
+                         <ul class="text-xs ni-text-blue list-disc list-inside space-y-1 mt-1 mb-2 leading-tight flex-grow">
+                            <li>Right-sized 100 kW modules scalable to 2.4 MW/8,000 A</li>
+                            <li>Wide operating envelope, dual range 600 V, 1200 V</li>
+                            <li>Regenerative power >90 percent energy efficiency</li>
+                            <li>Bidirectional DC source and load</li>
+                            <li>Current, voltage, and mode transitions <2 ms</li>
+                            <li>Battery emulation mode</li>
+                            <li>Built-in digital measurements with charting and scope displays</li>
+                         </ul>
+                         <a href="#" class="datasheet-button self-center">Download datasheet</a> 
+                     </div>
+                     <div class="animate-fade-in bg-white p-3 rounded shadow flex flex-col" style="animation-delay: 0.1s;"> 
+                         <img src="https://ni.scene7.com/is/image/ni/NI_ERS_BIC_960x540?fmt=png-alpha&scl=1" alt="ERS-BIC" class="w-full h-24 object-contain rounded mb-2"> 
+                         <h4 class="font-semibold text-gray-800 text-sm mt-auto">ERS-BIC</h4> 
+                         <ul class="text-xs ni-text-blue list-disc list-inside space-y-1 mt-1 mb-2 leading-tight flex-grow">
+                            <li>Right-sized 600kW modules scalable to 2.4MW</li>
+                            <li>Up to 180% overload capacity with fast recovery times</li>
+                            <li>Wide operating envelope 0 V to 1,500 V</li>
+                            <li>High dynamic DC source and load with energy recovery</li>
+                            <li>Optimized operation modes for 400 V/800 V class</li>
+                            <li>Output floated and short-circuit proof</li>
+                            <li>Voltage, current, or output control</li>
+                            <li>Water-cooling system for lower operating noise and low heat transmissions</li>
+                         </ul>
+                         <a href="#" class="datasheet-button self-center">Download datasheet</a> 
+                     </div>
+                     <div class="animate-fade-in bg-white p-3 rounded shadow flex flex-col" style="animation-delay: 0.2s;"> 
+                         <img src="https://ni.scene7.com/is/image/ni/NI_HPS_17000_16x9?fmt=png-alpha&scl=1" alt="HPS-17000" class="w-full h-24 object-contain rounded mb-2"> 
+                         <h4 class="font-semibold text-gray-800 text-sm mt-auto">HPS-17000</h4> 
+                         <ul class="text-xs ni-text-blue list-disc list-inside space-y-1 mt-1 mb-2 leading-tight flex-grow">
+                             <li>Right-sized 150kW modules scalable to 1.5 MW</li>
+                             <li>Wide operating envelope 400 V to 1,500 V</li>
+                             <li>Parallel cycler operation without physical proximity</li>
+                             <li>AC and DC overcurrent protection</li>
+                             <li>EMI filter</li>
+                             <li>Grid interface</li>
+                             <li>Modular design and swappable power bricks</li>
+                         </ul>
+                         <a href="#" class="datasheet-button self-center">Download datasheet</a> 
+                     </div>
                  </div>
              `;
          }
+
 
         // --- UPDATED Function to handle timing for FIRST interaction ---
         function updateRecommendationsAndContinueChat() {
@@ -603,7 +657,7 @@
             }, 2000); // 2 second thinking pause
         }
 
-         // --- NEW Function to handle timing for SECOND interaction ---
+         // --- UPDATED Function to handle timing for SECOND interaction ---
          function showSpecsAndFinalRecs() {
             // Show thinking indicator immediately
             const thinkingIndicator = showThinkingIndicator(); 
@@ -687,8 +741,7 @@
                 case 10.1: // Connect Sales Confirm
                 case 99: // Start Over / Maybe Later
                 case 100: // Done
-                    // (Simplified for brevity, content & logic mostly the same as previous version)
-                    // Ensure addAgentMessage is used for static text, typeAgentMessage if needed
+                    // (Simplified for brevity, ensure all addAgentMessage calls)
                      if (step === 3) { /* ... */ }
                     else if (step === 30) { /* ... */ }
                     else if (step === 31) {
@@ -697,7 +750,6 @@
                         addAgentMessage(caseStudyHTML); 
                         setTimeout(() => {
                             addAgentMessage("Would you like to see product specs or talk to sales?");
-                            // Buttons here should maybe lead to step 32 or 10 now?
                             showOptions([ { text: 'Show Specs', nextStep: 32 }, { text: 'Connect me to Sales', nextStep: 10 }, { text: 'Back', nextStep: 99 } ]); 
                         }, 800); 
                     }
@@ -723,8 +775,7 @@
                     }
                     else if (step === 99) { // Maybe Later / Start Over
                          addAgentMessage("Okay, is there anything else I can help you with?");
-                         // Show options relevant to the *current* state (after specs shown)
-                          showOptions([{ text: 'Yes, connect me', nextStep: 10 }, { text: 'No, I\'m done', nextStep: 100 }]);
+                         showOptions([{ text: 'Yes, connect me', nextStep: 10 }, { text: 'No, I\'m done', nextStep: 100 }]);
                     }
                     else if (step === 100) {
                          addAgentMessage("Thank you for using the NI Solution Finder! Have a great day...");
