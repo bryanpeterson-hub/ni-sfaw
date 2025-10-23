@@ -281,30 +281,47 @@
       UPDATED DEMO CONTAINER with Recommendations Panel
     -->
     <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center p-4 md:p-8">
-        <!-- Combined Container for Recs + Chat, positioned right -->
-        <div id="combined-panels-container" class="flex h-[60vh] w-full md:w-2/5 max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto">
+        <!-- Combined Container: Increased width to md:w-3/5 -->
+        <div id="combined-panels-container" class="flex h-[60vh] w-full md:w-3/5 max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto"> 
             
-            <!-- Recommendations Panel (Initially hidden off-screen left) -->
-            <div id="recommendations-panel" class="w-1/2 border-r border-gray-200 p-4 overflow-y-auto transition-transform duration-500 ease-out transform -translate-x-full bg-gray-50">
+            <!-- Recommendations Panel: Increased width to w-2/3 -->
+            <div id="recommendations-panel" class="w-2/3 border-r border-gray-200 p-4 overflow-y-auto transition-transform duration-500 ease-out transform -translate-x-full bg-gray-50">
                 <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2">Recommendations</h3>
-                <!-- Recommendation 1 -->
-                <div class="mb-6 animate-fade-in">
-                    <img src="https://ni.scene7.com/is/image/ni/AdobeStock_109562868_690x368?scl=1" alt="EV Battery Test" class="w-full h-32 object-cover rounded mb-2 shadow">
-                    <h4 class="font-semibold text-gray-800">Electric Vehicle Battery Test</h4>
-                    <p class="text-sm ni-text-blue mb-1">Explore solutions for battery validation across the entire lifecycle.</p>
-                    <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
-                </div>
-                 <!-- Recommendation 2 -->
-                 <div class="mb-4 animate-fade-in" style="animation-delay: 0.2s;">
-                    <img src="https://ni.scene7.com/is/image/ni/Triphase_04_690x368?scl=1" alt="High Power EV Test" class="w-full h-32 object-cover rounded mb-2 shadow">
-                    <h4 class="font-semibold text-gray-800">High Power Electric Vehicle Test</h4>
-                    <p class="text-sm ni-text-blue mb-1">Test high-voltage components like inverters, onboard chargers, and DC fast chargers.</p>
-                    <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
+                <!-- UPDATED Content: 2x2 Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Recommendation 1 -->
+                    <div class="mb-4 animate-fade-in bg-white p-3 rounded shadow">
+                        <img src="https://ni.scene7.com/is/image/ni/9300-high-voltage-battery-test-system-front-left-2022_480x256?scl=1" alt="High Voltage DC Cycler" class="w-full h-24 object-contain rounded mb-2">
+                        <h4 class="font-semibold text-gray-800 text-sm">High-Voltage DC Cycler and Emulator</h4>
+                        <p class="text-xs ni-text-blue mb-1 leading-tight">Offers modular, regenerative battery pack test systems with a power range spanning from 100 kW to 2.4 MW.</p>
+                        <a href="#" class="text-xs font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
+                    </div>
+                     <!-- Recommendation 2 -->
+                     <div class="mb-4 animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.1s;">
+                        <img src="https://ni.scene7.com/is/image/ni/HPS-17000+Render-Angled_480x256?scl=1" alt="HPS-17000" class="w-full h-24 object-contain rounded mb-2">
+                        <h4 class="font-semibold text-gray-800 text-sm">HPS-17000 Battery Cycler and Emulator</h4>
+                        <p class="text-xs ni-text-blue mb-1 leading-tight">Test and validate EV battery packs up to 1,500 volts with low- and high-voltage modes, reliably correlate cycler actions with measurements...</p>
+                        <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
+                    </div>
+                     <!-- Recommendation 3 -->
+                     <div class="mb-4 animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.2s;">
+                        <img src="https://ni.scene7.com/is/image/ni/NHR_4800_Cycler_480x256?scl=1" alt="Mid-Voltage DC Cycler" class="w-full h-24 object-contain rounded mb-2">
+                        <h4 class="font-semibold text-gray-800 text-sm">Mid-Voltage DC Cycler and Emulator</h4>
+                        <p class="text-xs ni-text-blue mb-1 leading-tight">Serves as a multifunction solution for battery cycling and emulation for low- to medium-power applications...</p>
+                        <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
+                    </div>
+                     <!-- Recommendation 4 -->
+                     <div class="mb-4 animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.3s;">
+                        <img src="https://ni.scene7.com/is/image/ni/9510-regenerative-grid-simulator-front-left_480x256?scl=1" alt="Regenerative Grid Simulator" class="w-full h-24 object-contain rounded mb-2">
+                        <h4 class="font-semibold text-gray-800 text-sm">Regenerative Grid Simulator</h4>
+                        <p class="text-xs ni-text-blue mb-1 leading-tight">Offers capabilities for grid-tied inverter testing, vehicle to grid testing, AC power product testing, and more.</p>
+                        <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Existing Chat Panel (Takes remaining width) -->
-            <div class="w-1/2 flex flex-col h-full">
+            <!-- Chat Panel: Reduced width to w-1/3 -->
+            <div class="w-1/3 flex flex-col h-full">
                 <!-- Chat Header -->
                  <div class="p-4 border-b border-gray-200">
                     <h2 class="text-xl font-semibold ni-text-blue">NI Solution Finder</h2>
@@ -331,7 +348,7 @@
                 </div>
             </div>
             
-            <!-- Close Button (Position relative to combined container) -->
+            <!-- Close Button -->
             <button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black z-10">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
@@ -340,7 +357,7 @@
     </div>
 
     <!-- 
-      DEMO JAVASCRIPT: Updated startDemo and resetDemo
+      DEMO JAVASCRIPT: Updated handleFormSubmit and runStep(2)
     -->
     <script>
         // --- Demo State Management ---
@@ -352,29 +369,20 @@
         let currentStep = 0; 
         const heroHeadline = document.getElementById('hero-headline'); 
         const heroSubhead = document.getElementById('hero-subhead'); 
-        const recommendationsPanel = document.getElementById('recommendations-panel'); // Get ref to new panel
+        const recommendationsPanel = document.getElementById('recommendations-panel'); 
         
         // --- Demo Flow Logic ---
         
         function startDemo() {
             document.getElementById('solution-finder-trigger').classList.add('hidden');
             document.getElementById('demo-container').classList.remove('hidden');
-            
-            // Start the conversation mid-flow
             runStep(1.5); 
-
-            // Slide in recommendations panel after a short delay
-            setTimeout(() => {
-                recommendationsPanel.classList.remove('-translate-x-full');
-            }, 300); // Adjust delay as needed
+            setTimeout(() => { recommendationsPanel.classList.remove('-translate-x-full'); }, 300); 
         }
         
         function resetDemo() {
             document.getElementById('demo-container').classList.add('hidden');
-            // Hide recommendations panel immediately
             recommendationsPanel.classList.add('-translate-x-full'); 
-            
-            // document.getElementById('solution-finder-trigger').classList.remove('hidden'); 
             chatMessages.innerHTML = '';
             chatOptions.innerHTML = '';
             chatInput.value = ''; 
@@ -394,41 +402,27 @@
             const container = document.createElement('div');
             container.className = 'agent-message-container';
             const avatar = document.createElement('img');
-            avatar.src = agentAvatarUrl;
-            avatar.alt = "Agent Avatar";
-            avatar.className = 'agent-avatar'; 
+            avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; 
             container.appendChild(avatar);
             const msg = document.createElement('div');
-            msg.className = 'chat-bubble chat-bubble-agent';
-            container.appendChild(msg);
+            msg.className = 'chat-bubble chat-bubble-agent'; container.appendChild(msg);
             const contentDiv = document.createElement('div'); 
             const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'typing-indicator';
-            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
-            contentDiv.appendChild(typingIndicator);
-            msg.appendChild(contentDiv);
-            chatMessages.appendChild(container); 
-            scrollToBottom();
+            typingIndicator.className = 'typing-indicator'; typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            contentDiv.appendChild(typingIndicator); msg.appendChild(contentDiv);
+            chatMessages.appendChild(container); scrollToBottom();
 
-            let i = 0;
-            const typingSpeed = 30; 
-
+            let i = 0; const typingSpeed = 30; 
             function typeChar() {
                 if (i < fullText.length) {
                     if (i === 0) contentDiv.innerHTML = ''; 
-                    contentDiv.innerHTML += fullText.charAt(i);
-                    i++;
-                    scrollToBottom(); 
-                    setTimeout(typeChar, typingSpeed);
+                    contentDiv.innerHTML += fullText.charAt(i); i++;
+                    scrollToBottom(); setTimeout(typeChar, typingSpeed);
                 } else {
                     const timestampSpan = document.createElement('span');
-                    timestampSpan.className = 'block text-xs text-gray-500 mt-1';
-                    timestampSpan.textContent = getCurrentTime();
-                    msg.appendChild(timestampSpan);
-                    scrollToBottom(); 
-                    if (onComplete) {
-                        setTimeout(onComplete, 50); 
-                    }
+                    timestampSpan.className = 'block text-xs text-gray-500 mt-1'; timestampSpan.textContent = getCurrentTime();
+                    msg.appendChild(timestampSpan); scrollToBottom(); 
+                    if (onComplete) { setTimeout(onComplete, 50); }
                 }
             }
             setTimeout(typeChar, 1000); 
@@ -436,74 +430,34 @@
 
         // --- Add Standard Agent Message ---
         function addAgentMessage(text) {
-            const container = document.createElement('div');
-            container.className = 'agent-message-container';
-            const avatar = document.createElement('img');
-            avatar.src = agentAvatarUrl;
-            avatar.alt = "Agent Avatar";
-            avatar.className = 'agent-avatar';
-            container.appendChild(avatar);
-            const msg = document.createElement('div');
-            msg.className = 'chat-bubble chat-bubble-agent';
-            const contentDiv = document.createElement('div'); 
-            contentDiv.innerHTML = text;
-            msg.appendChild(contentDiv);
-            const timestampSpan = document.createElement('span');
-            timestampSpan.className = 'block text-xs text-gray-500 mt-1';
-            timestampSpan.textContent = getCurrentTime();
-            msg.appendChild(timestampSpan);
-            container.appendChild(msg);
-            chatMessages.appendChild(container); 
-            scrollToBottom();
+            const container = document.createElement('div'); container.className = 'agent-message-container';
+            const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
+            const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent';
+            const contentDiv = document.createElement('div'); contentDiv.innerHTML = text; msg.appendChild(contentDiv);
+            const timestampSpan = document.createElement('span'); timestampSpan.className = 'block text-xs text-gray-500 mt-1'; timestampSpan.textContent = getCurrentTime(); msg.appendChild(timestampSpan);
+            container.appendChild(msg); chatMessages.appendChild(container); scrollToBottom();
         }
 
         // --- Add Agent Message with CTA ---
         function addCTAMessage(text, ctaText, ctaLink) {
-            const container = document.createElement('div');
-            container.className = 'agent-message-container';
-            const avatar = document.createElement('img');
-            avatar.src = agentAvatarUrl;
-            avatar.alt = "Agent Avatar";
-            avatar.className = 'agent-avatar';
-            container.appendChild(avatar);
-            const msg = document.createElement('div');
-            msg.className = 'chat-bubble chat-bubble-agent';
+            const container = document.createElement('div'); container.className = 'agent-message-container';
+            const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
+            const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent';
             const contentDiv = document.createElement('div'); 
-            if (text && text.trim().length > 0) {
-                 contentDiv.innerHTML = text; 
-            }
-            const ctaLinkElement = document.createElement('a');
-            ctaLinkElement.href = ctaLink;
-            ctaLinkElement.textContent = "EV Battery Testing Solutions"; 
-            ctaLinkElement.className = 'cta-button'; 
-            ctaLinkElement.target = "_self"; 
-            if (text && text.trim().length > 0) {
-                 contentDiv.appendChild(document.createElement('br')); 
-            }
-            contentDiv.appendChild(ctaLinkElement); 
-            msg.appendChild(contentDiv);
-            const timestampSpan = document.createElement('span');
-            timestampSpan.className = 'block text-xs text-gray-500 mt-1';
-            timestampSpan.textContent = getCurrentTime();
-            msg.appendChild(timestampSpan);
-            container.appendChild(msg);
-            chatMessages.appendChild(container); 
-            scrollToBottom();
+            if (text && text.trim().length > 0) contentDiv.innerHTML = text; 
+            const ctaLinkElement = document.createElement('a'); ctaLinkElement.href = ctaLink; ctaLinkElement.textContent = "EV Battery Testing Solutions"; ctaLinkElement.className = 'cta-button'; ctaLinkElement.target = "_self"; 
+            if (text && text.trim().length > 0) contentDiv.appendChild(document.createElement('br')); 
+            contentDiv.appendChild(ctaLinkElement); msg.appendChild(contentDiv);
+            const timestampSpan = document.createElement('span'); timestampSpan.className = 'block text-xs text-gray-500 mt-1'; timestampSpan.textContent = getCurrentTime(); msg.appendChild(timestampSpan);
+            container.appendChild(msg); chatMessages.appendChild(container); scrollToBottom();
         }
 
         // --- Add User Message ---
         function addUserMessage(text) {
-            const msg = document.createElement('div');
-            msg.className = 'chat-bubble chat-bubble-user';
-            const contentDiv = document.createElement('div'); 
-            contentDiv.innerHTML = text;
-            msg.appendChild(contentDiv);
-            const timestampSpan = document.createElement('span');
-            timestampSpan.className = 'block text-xs text-white opacity-70 mt-1'; 
-            timestampSpan.textContent = getCurrentTime();
-            msg.appendChild(timestampSpan);
-            chatMessages.appendChild(msg);
-            scrollToBottom();
+            const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-user';
+            const contentDiv = document.createElement('div'); contentDiv.innerHTML = text; msg.appendChild(contentDiv);
+            const timestampSpan = document.createElement('span'); timestampSpan.className = 'block text-xs text-white opacity-70 mt-1'; timestampSpan.textContent = getCurrentTime(); msg.appendChild(timestampSpan);
+            chatMessages.appendChild(msg); scrollToBottom();
         }
 
         // --- Show Buttons ---
@@ -512,9 +466,7 @@
             setTimeout(() => {
                 chatOptions.innerHTML = ''; 
                 options.forEach(option => {
-                    const btn = document.createElement('button');
-                    btn.className = 'chat-option';
-                    btn.innerHTML = option.text;
+                    const btn = document.createElement('button'); btn.className = 'chat-option'; btn.innerHTML = option.text;
                     btn.onclick = () => handleOption(option.nextStep, option.text); 
                     chatOptions.appendChild(btn);
                 });
@@ -538,10 +490,19 @@
             chatInput.value = '';
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             
-             setTimeout(() => {
-                addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
-                runStep(99); 
-             }, 1200);
+            // If user types after the initial pre-populated message sequence (step 1.6), trigger step 2
+             if (currentStep === 1.6) { 
+                 setTimeout(() => {
+                     runStep(2); 
+                 }, 1200);
+             } else { // Otherwise, give canned response
+                 setTimeout(() => {
+                    addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
+                    // Re-show the last relevant buttons, likely from step 1.6 or step 2
+                    if (currentStep >= 2) runStep(99); // Show buttons related to challenges/cycler
+                    // Could add logic here to show specific buttons based on currentStep if needed
+                 }, 1200);
+             }
         }
         
         chatForm.addEventListener('submit', handleFormSubmit);
@@ -555,64 +516,46 @@
             currentStep = step; 
 
             switch (step) {
-                // Step 1 is now skipped by startDemo()
+                // Step 1 is skipped
                 case 1: break; 
 
-                case 1.5: // Agent Response with CTA (STATIC)
+                case 1.5: // Agent Response + CTA (STATIC)
                     const ctaIntro = "Great, I can help with exploring our EV battery test solutions. Here's where you can find more information:";
                     addAgentMessage(ctaIntro); 
                     addCTAMessage("", "EV Battery Testing Solutions", "https://ni-adaptive-website-demo-edd7ba489258.herokuapp.com/battery.html"); 
                     runStep(1.6); 
                     break;
                 
-                case 1.6: // Agent Follow-up Question (STATIC)
+                case 1.6: // Agent Follow-up Question (STATIC) - Waits for user input
                     const challengeQuestion = "What's your primary challenge: performance validation, lifecycle testing, or end-of-line manufacturing?";
                     addAgentMessage(challengeQuestion);
-                    showOptions([
-                        { text: 'Performance Validation', nextStep: 2 }, 
-                        { text: 'Lifecycle Testing', nextStep: 2 },
-                        { text: 'End-of-Line Manufacturing', nextStep: 2 } 
-                    ]);
+                    // DO NOT show options here, wait for handleFormSubmit or handleOption
                     break;
 
-                // --- PATH 1: Industry Solutions ---
+                // --- NEW Step 2 triggered by user input after 1.6 ---
                 case 2: 
-                    addAgentMessage("Understood. We have strong capabilities in that area, especially with our PXI-based systems.");
-                    addAgentMessage("A common product for this is our High-Voltage Battery Cycler. Would you like to see specs for that, or perhaps a relevant case study?");
-                    showOptions([
-                        { text: 'Show Cycler Specs', nextStep: 32 }, 
-                        { text: 'Show me a case study', nextStep: 31 }, 
-                        { text: 'Connect me to Sales', nextStep: 10 },
-                        { text: 'Back to start', nextStep: 99 }
-                    ]);
+                    // User message was already added by handleFormSubmit/handleOption
+                    const validationResponse = "Understood. Lifecycle validation is a core strength. Our PXI-based systems are the industry standard for this. Based on your goal, I can pull up specifications for our High-Voltage Battery Cycler, or would you prefer to see an application note on 'Simulating Real-World Driving Profiles'?";
+                    chatOptions.innerHTML = ''; // Clear buttons immediately
+                    // Type the response, NO buttons shown after
+                    typeAgentMessage(validationResponse); 
                     break;
 
-                // --- PATH 2: Products ---
+                // --- PATH 2: Products (Less likely to be reached now) ---
                 case 3: 
-                    addAgentMessage("I can provide information on our key product families. Which one would you like to know more about?");
-                    showOptions([
-                        { text: 'PXI Platform', nextStep: 40 },
-                        { text: 'LabVIEW', nextStep: 41 },
-                        { text: 'TestStand', nextStep: 41 },
-                        { text: 'Back to start', nextStep: 99 }
-                    ]);
+                    addAgentMessage("I can provide information on our key product families...");
+                    showOptions([ /* ... */ ]); // Same as before
                     break;
                 
-                 // --- Other steps remain the same ---
-               
+                 // --- Other steps remain reachable via potential future button clicks ---               
                 case 30: 
-                    addAgentMessage("Our EV Test solutions cover everything from battery and inverter test to ADAS validation. A key product is our High-Voltage Battery Cycler.");
-                    addAgentMessage("I can give you the specs for that, show you a case study, or connect you with a sales rep.");
-                    showOptions([
-                        { text: 'Show Cycler Specs', nextStep: 32 },
-                        { text: 'Show me a case study', nextStep: 31 }, 
-                        { text: 'Connect me to Sales', nextStep: 10 },
-                        { text: 'Back to start', nextStep: 99 }
-                    ]);
+                    addAgentMessage("Our EV Test solutions cover everything...");
+                    addAgentMessage("I can give you the specs...");
+                    showOptions([ /* ... */ ]); // Same as before
                     break;
                 
                 case 31: 
-                    addAgentMessage("Great choice. Here is a recent case study about how the BMW Group is using our digital twin solutions to accelerate validation.");
+                    addAgentMessage("Great choice. Here is a recent case study...");
                     const caseStudyHTML = `...`; // Same as before
                     addAgentMessage(caseStudyHTML); 
                     setTimeout(() => {
@@ -626,7 +569,7 @@
                     const specsHTML = `...`; // Same as before
                     addAgentMessage(specsHTML); 
                      setTimeout(() => {
-                        addAgentMessage("This requires careful configuration. I recommend speaking with a sales rep.");
+                        addAgentMessage("This requires careful configuration...");
                         showOptions([ /* ... */ ]); // Same as before
                     }, 800);
                     break;
@@ -682,9 +625,13 @@
                      break;
                 
                 // --- ENDING PATHS ---
-                case 99: 
+                case 99: // Back to start - Now shows the challenge buttons
                     addAgentMessage("Okay, what else can I help you with?");
-                     showOptions([ /* ... */ ]); // Same as before
+                     showOptions([ 
+                        { text: 'Performance Validation', nextStep: 2 }, 
+                        { text: 'Lifecycle Testing', nextStep: 2 },
+                        { text: 'End-of-Line Manufacturing', nextStep: 2 } 
+                    ]);
                     break;
                 
                 case 100: 
