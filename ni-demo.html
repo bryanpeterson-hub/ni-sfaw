@@ -464,49 +464,48 @@
 
     <!-- 
       NEW CHAT-ONLY DEMO CONTAINER 
+      Updated position to right and size
     -->
-    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100]">
-        <div class="flex h-full w-full items-center justify-center p-4">
-            <!-- Modal is now narrower -->
-            <div class="flex flex-col h-[90vh] w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden relative">
-                
-                <!-- Chat Panel -->
-                <div class="w-full flex flex-col h-full">
-                    <div class="p-4 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold ni-text-blue">NI Solution Finder</h2>
-                        <!-- Updated Subtitle -->
-                        <p class="text-sm text-gray-600">Powered by Agentforce</p>
-                    </div>
-                    
-                    <!-- Chat Messages -->
-                    <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
-                        <!-- Messages will be injected here by JS -->
-                    </div>
-                    
-                    <!-- Chat Options -->
-                    <div id="chat-options" class="p-4 bg-gray-50 flex flex-wrap justify-center">
-                        <!-- Options will be injected here by JS -->
-                    </div>
-
-                    <!-- NEW: Text Input Bar -->
-                    <div id="chat-input-bar" class="p-4 bg-white border-t border-gray-200">
-                        <form id="chat-form" class="flex space-x-3">
-                            <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border-gray-300 rounded-full shadow-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-ni-blue" autocomplete="off">
-                            <button type="submit" class="ni-bg-blue text-white rounded-full p-0 w-10 h-10 flex items-center justify-center flex-shrink-0 hover:opacity-90">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transform: rotate(90deg);">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
+    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-end p-4 md:p-8">
+        <!-- Modal is now smaller and aligned right -->
+        <div class="flex flex-col h-[60vh] w-full md:w-1/3 max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto">
+            
+            <!-- Chat Panel -->
+            <div class="w-full flex flex-col h-full">
+                <div class="p-4 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold ni-text-blue">NI Solution Finder</h2>
+                    <!-- Updated Subtitle -->
+                    <p class="text-sm text-gray-600">Powered by Agentforce</p>
                 </div>
                 
-                <!-- Close Button -->
-                <button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black z-10">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
+                    <!-- Messages will be injected here by JS -->
+                </div>
+                
+                <!-- Chat Options -->
+                <div id="chat-options" class="p-4 bg-gray-50 flex flex-wrap justify-center">
+                    <!-- Options will be injected here by JS -->
+                </div>
 
+                <!-- NEW: Text Input Bar -->
+                <div id="chat-input-bar" class="p-4 bg-white border-t border-gray-200">
+                    <form id="chat-form" class="flex space-x-3">
+                        <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border-gray-300 rounded-full shadow-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-ni-blue" autocomplete="off">
+                        <button type="submit" class="ni-bg-blue text-white rounded-full p-0 w-10 h-10 flex items-center justify-center flex-shrink-0 hover:opacity-90">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="transform: rotate(90deg);">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
             </div>
+            
+            <!-- Close Button -->
+            <button onclick="resetDemo()" class="absolute top-2 right-2 text-gray-600 hover:text-black z-10">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
         </div>
     </div>
 
@@ -890,6 +889,9 @@
             }
         `;
         document.head.appendChild(styleSheet);
+        
+        // No initializePersonalization needed for this page
+        // document.addEventListener('DOMContentLoaded', initializePersonalization);
         
     </script>
 
