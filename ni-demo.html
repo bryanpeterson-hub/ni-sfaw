@@ -46,6 +46,7 @@
             border-radius: 1rem;
             margin-bottom: 0.5rem;
             line-height: 1.4;
+            position: relative; /* Needed for timestamp positioning if we used absolute */
         }
         .chat-bubble-agent {
             background-color: #f0f4f8;
@@ -466,9 +467,9 @@
       NEW CHAT-ONLY DEMO CONTAINER 
       Updated position to right and size
     -->
-    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-end p-4 md:p-8">
-        <!-- Modal is now smaller and aligned right -->
-        <div class="flex flex-col h-[60vh] w-full md:w-1/3 max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto">
+    <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center p-4 md:p-8">
+        <!-- Modal is now smaller, aligned right, and with margin-left auto -->
+        <div class="flex flex-col h-[60vh] w-full md:w-1/4 max-w-md bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto">
             
             <!-- Chat Panel -->
             <div class="w-full flex flex-col h-full">
@@ -511,6 +512,7 @@
 
     <!-- 
       NEW CHAT-ONLY DEMO JAVASCRIPT
+      Updated to include timestamps
     -->
     <script>
         // --- Demo State Management ---
@@ -540,16 +542,24 @@
             chatInput.value = ''; // Clear text input
         }
 
-        // --- New "Typing" Simulation ---
+        // --- Get current time for timestamp ---
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        }
+
+        // --- New "Typing" Simulation with Timestamp ---
         function typeAgentMessage(fullText, onComplete) {
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-agent';
+            
+            const contentDiv = document.createElement('div'); // Div for text content
             
             // Add typing indicator
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'typing-indicator';
             typingIndicator.innerHTML = '<span></span><span></span><span></span>';
-            msg.appendChild(typingIndicator);
+            contentDiv.appendChild(typingIndicator);
+            msg.appendChild(contentDiv);
             chatMessages.appendChild(msg);
             scrollToBottom();
 
@@ -560,14 +570,20 @@
                 if (i < fullText.length) {
                     // Replace indicator with text
                     if (i === 0) {
-                        msg.innerHTML = '';
+                        contentDiv.innerHTML = ''; // Clear indicator
                     }
-                    msg.innerHTML += fullText.charAt(i);
+                    contentDiv.innerHTML += fullText.charAt(i);
                     i++;
                     scrollToBottom();
                     setTimeout(typeChar, typingSpeed);
                 } else {
-                    // Typing complete
+                    // Typing complete, add timestamp
+                    const timestampSpan = document.createElement('span');
+                    timestampSpan.className = 'block text-xs text-gray-500 mt-1';
+                    timestampSpan.textContent = getCurrentTime();
+                    msg.appendChild(timestampSpan);
+                    scrollToBottom();
+
                     if (onComplete) {
                         onComplete();
                     }
@@ -578,10 +594,20 @@
             setTimeout(typeChar, 1000);
         }
 
+        // --- Updated message functions with Timestamp ---
         function addAgentMessage(text) {
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-agent';
-            msg.innerHTML = text;
+            
+            const contentDiv = document.createElement('div'); // Div for text content
+            contentDiv.innerHTML = text;
+            msg.appendChild(contentDiv);
+
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'block text-xs text-gray-500 mt-1';
+            timestampSpan.textContent = getCurrentTime();
+            msg.appendChild(timestampSpan);
+
             chatMessages.appendChild(msg);
             scrollToBottom();
         }
@@ -589,7 +615,16 @@
         function addUserMessage(text) {
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-user';
-            msg.innerHTML = text;
+            
+            const contentDiv = document.createElement('div'); // Div for text content
+            contentDiv.innerHTML = text;
+            msg.appendChild(contentDiv);
+
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'block text-xs text-white opacity-70 mt-1'; // Adjusted color for user bubble
+            timestampSpan.textContent = getCurrentTime();
+            msg.appendChild(timestampSpan);
+
             chatMessages.appendChild(msg);
             scrollToBottom();
         }
