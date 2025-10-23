@@ -304,8 +304,8 @@
             
             <!-- Recommendations Panel: Initial narrow width, transitions added -->
             <div id="recommendations-panel" class="w-1/2 border-r border-gray-200 p-4 overflow-y-auto transition-all duration-500 ease-out transform -translate-x-full bg-gray-50">
-                 <!-- Added sticky title -->
-                <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2 z-10">Recommendations</h3>
+                 <!-- Updated sticky title with matching style -->
+                <h3 class="text-xl font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2 z-10">Recommendations</h3>
                 <!-- Content div -->
                  <div id="recommendations-content">
                     <!-- Initial Content Populated by JS -->
@@ -349,7 +349,7 @@
     </div>
 
     <!-- 
-      DEMO JAVASCRIPT: Added new chat flow steps
+      DEMO JAVASCRIPT: Added new chat flow steps and scrolling fix logic
     -->
     <script>
         // --- Demo State Management ---
@@ -522,8 +522,11 @@
                  updateRecommendationsAndContinueChat(); 
             } else if (currentStep === 2) { 
                  showSpecsAndFinalRecs(); 
-            } else if (currentStep === 33 && nextStep === 99.1) { 
+            } else if (currentStep === 33 && nextStep === 99.1) { // Check for Maybe Later from step 33
                  runStep(99.1); 
+            } else if (currentStep === 99.3 && nextStep === 1.6) { // Check for Start Over from step 99.3
+                resetDemo(); // Fully reset the demo state
+                setTimeout(startDemo, 500); // Restart after a short delay
             } else { 
                  setTimeout(() => { runStep(nextStep); }, 1200);
             }
@@ -550,7 +553,7 @@
                     // Re-show relevant buttons based on where they typed
                     if (currentStep >= 33) runStep(99.3); // Show final options
                     else if (currentStep >= 2) runStep(2); // Still deciding on specs/notes? Go back to step 2 pause state
-                    else if (currentStep >= 1.6) runStep(1.6); 
+                    else if (currentStep >= 1.6) runStep(1.6); // Should not happen often, but reset to challenge question
                  }, 1200);
              }
         }
@@ -585,7 +588,7 @@
          function getSpecsRecommendationsHTML() {
               // Returns HTML for the final 3 recommendations (specs) with datasheet buttons
              return `
-                 <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2 z-10">Technical High-Voltage Battery Test System Highlights</h3>
+                 <h3 class="text-xl font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2 z-10">Technical High-Voltage Battery Test System Highlights</h3>
                  <div class="space-y-4"> 
                      <div class="animate-fade-in bg-white p-3 rounded shadow flex flex-col"> 
                          <img src="https://ni.scene7.com/is/image/ni/2549624_nhr_9300_high_voltage_battery_test_system_960x540?fmt=png-alpha&scl=1" alt="NHR-9300" class="w-full h-24 object-contain rounded mb-2"> 
@@ -802,7 +805,7 @@
 
                  // --- Old Step 99 is effectively removed ---
                  case 99: 
-                     // Fallback in case this is reached somehow
+                     // Fallback in case this is reached somehow (e.g., unexpected button click)
                      addAgentMessage("Is there anything else I can help you with?");
                      showOptions([{ text: 'Start Over', nextStep: 1.6 }, { text: 'No, I\'m done', nextStep: 100 }]);
                      break;
@@ -812,10 +815,10 @@
 
         // --- Helper functions for HTML content ---
         // (getCaseStudyHTML_31, getPxiHTML_42, getDemoHTML_43, getFormHTML_10 remain unchanged)
-        function getCaseStudyHTML_31() { return `...`; } // Simplified for brevity
-        function getPxiHTML_42() { return `...`; } // Simplified for brevity
-        function getDemoHTML_43() { return `...`; } // Simplified for brevity
-        function getFormHTML_10() { return `...`; } // Simplified for brevity
+        function getCaseStudyHTML_31() { return `<div class="p-3 bg-white rounded-lg border border-gray-200"><img src="https://ni.scene7.com/is/image/ni/AdobeStock_236859072_logo_539x399?scl=1" alt="BMW Group" class="w-full h-32 object-cover rounded mb-2"><h4 class="font-semibold text-gray-900">Shifting Left in Validation</h4><p class="text-sm text-gray-700">The BMW Group is using a digital twin approach to identify design weaknesses earlier.</p><a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Read the full story &rarr;</a></div>`; }
+        function getPxiHTML_42() { return `<div class="p-3 bg-white rounded-lg border border-gray-200"><h4 class="font-semibold ni-text-blue">PXI Product Families</h4><ul class="list-disc list-inside text-sm text-gray-700 mt-2"><li><b>Chassis:</b> The backbone of your system.</li><li><b>Controllers:</b> Embedded or remote control.</li><li><b>Modules:</b> Hundreds of modules for I/O, instrumentation, and timing.</li></ul><a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Browse all PXI hardware &rarr;</a></div>`; }
+        function getDemoHTML_43() { return `<div class="p-3 bg-white rounded-lg border border-gray-200"><img src="https://placehold.co/400x200/003c71/9fcd3a?text=LabVIEW+Demo" alt="LabVIEW Demo" class="w-full h-32 object-cover rounded mb-2"><h4 class="font-semibold text-gray-900">LabVIEW in 5 Minutes</h4><a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Watch the video &rarr;</a></div>`; }
+        function getFormHTML_10() { return `<div class="p-3 bg-gray-100 rounded-lg border border-gray-200 text-sm"><p><b>Name:</b> Raj Singh</p><p><b>Company:</b> Tier 1 Automotive</p><p><b>Email:</b> raj.singh@tier1-auto.com</p></div>`; }
         
         // --- Page Personalization Logic ---
         function initializePersonalization() {
