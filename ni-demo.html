@@ -39,26 +39,43 @@
             @apply hover:border-b-4 hover:border-ni-green hover:text-black;
         }
         
+        /* Agent Message Container */
+        .agent-message-container {
+            display: flex;
+            align-items: flex-end; /* Align avatar with bottom of bubble */
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+        }
+
+        /* Agent Avatar */
+        .agent-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0; /* Prevent avatar from shrinking */
+        }
+
         /* Chat bubble styles */
         .chat-bubble {
             max-width: 80%;
             padding: 0.75rem 1rem;
             border-radius: 1rem;
-            margin-bottom: 0.5rem;
             line-height: 1.4;
-            position: relative; /* Needed for timestamp positioning if we used absolute */
+            position: relative; 
         }
         .chat-bubble-agent {
             background-color: #f0f4f8;
             color: #1a202c;
             border-bottom-left-radius: 0.25rem;
-            align-self: flex-start;
+            /* Removed align-self and margin-bottom as container handles it */
         }
         .chat-bubble-user {
             background-color: var(--ni-blue);
             color: white;
             border-bottom-right-radius: 0.25rem;
-            align-self: flex-end;
+            align-self: flex-end; /* User bubbles still align right */
+            margin-bottom: 0.5rem; /* User bubbles still need margin */
         }
         
         /* Chat options button styles */
@@ -129,6 +146,15 @@
              color: var(--ni-blue);
              border-color: var(--ni-blue);
         }
+
+        /* Agent Joined Message Style */
+        .agent-joined-message {
+            text-align: center;
+            font-size: 0.75rem; /* text-xs */
+            color: #6b7280; /* text-gray-500 */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+
     </style>
 </head>
 <body class="bg-white">
@@ -512,7 +538,7 @@
 
     <!-- 
       NEW CHAT-ONLY DEMO JAVASCRIPT
-      Updated to include timestamps
+      Updated to include avatars and "Joined" message
     -->
     <script>
         // --- Demo State Management ---
@@ -520,6 +546,7 @@
         const chatOptions = document.getElementById('chat-options');
         const chatForm = document.getElementById('chat-form');
         const chatInput = document.getElementById('chat-input');
+        const agentAvatarUrl = 'https://www.ni.com/favicon-32x32.png'; // Agent avatar URL
         
         // --- Demo Flow Logic ---
         
@@ -546,11 +573,30 @@
         function getCurrentTime() {
             return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
         }
+        
+        // --- NEW: Add Agent Joined Message ---
+        function addAgentJoinedMessage() {
+            const joinedMsg = document.createElement('div');
+            joinedMsg.className = 'agent-joined-message';
+            joinedMsg.innerHTML = `NI Solution Finder joined • ${getCurrentTime()}`;
+            chatMessages.appendChild(joinedMsg);
+            scrollToBottom();
+        }
 
-        // --- New "Typing" Simulation with Timestamp ---
+        // --- New "Typing" Simulation with Avatar and Timestamp ---
         function typeAgentMessage(fullText, onComplete) {
+            const container = document.createElement('div');
+            container.className = 'agent-message-container';
+
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl;
+            avatar.alt = "Agent Avatar";
+            avatar.className = 'agent-avatar invisible'; // Start invisible
+            container.appendChild(avatar);
+
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-agent';
+            container.appendChild(msg);
             
             const contentDiv = document.createElement('div'); // Div for text content
             
@@ -560,7 +606,7 @@
             typingIndicator.innerHTML = '<span></span><span></span><span></span>';
             contentDiv.appendChild(typingIndicator);
             msg.appendChild(contentDiv);
-            chatMessages.appendChild(msg);
+            chatMessages.appendChild(container); // Append container
             scrollToBottom();
 
             let i = 0;
@@ -577,7 +623,8 @@
                     scrollToBottom();
                     setTimeout(typeChar, typingSpeed);
                 } else {
-                    // Typing complete, add timestamp
+                    // Typing complete, add timestamp and show avatar
+                    avatar.classList.remove('invisible'); // Show avatar
                     const timestampSpan = document.createElement('span');
                     timestampSpan.className = 'block text-xs text-gray-500 mt-1';
                     timestampSpan.textContent = getCurrentTime();
@@ -594,8 +641,17 @@
             setTimeout(typeChar, 1000);
         }
 
-        // --- Updated message functions with Timestamp ---
+        // --- Updated message functions with Avatar and Timestamp ---
         function addAgentMessage(text) {
+            const container = document.createElement('div');
+            container.className = 'agent-message-container';
+
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl;
+            avatar.alt = "Agent Avatar";
+            avatar.className = 'agent-avatar';
+            container.appendChild(avatar);
+
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-agent';
             
@@ -608,11 +664,13 @@
             timestampSpan.textContent = getCurrentTime();
             msg.appendChild(timestampSpan);
 
-            chatMessages.appendChild(msg);
+            container.appendChild(msg);
+            chatMessages.appendChild(container); // Append container
             scrollToBottom();
         }
 
         function addUserMessage(text) {
+            // User message remains the same (no avatar)
             const msg = document.createElement('div');
             msg.className = 'chat-bubble chat-bubble-user';
             
@@ -684,17 +742,20 @@
         // --- NEW CHAT-ONLY DEMO SCRIPT ---
         function runStep(step) {
             switch (step) {
-                case 1: // Agent Intro
-                    const greeting = "Hi! I'm your NI Solution Finder Agent. I can help match your needs to one of our NI Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
+                case 1: // Agent Intro Sequence
+                    addAgentJoinedMessage(); // Add "Agent Joined" message first
                     
-                    typeAgentMessage(greeting, () => {
-                        // This runs after typing is complete
-                        showOptions([
-                            { text: 'Industry Solutions', nextStep: 2 },
-                            { text: 'Products', nextStep: 3 },
-                            { text: 'Connect me to a Sales Rep', nextStep: 10 }
-                        ]);
-                    });
+                    setTimeout(() => { // Wait before typing greeting
+                        const greeting = "Hi! I'm your NI Solution Finder Agent. I can help match your needs to one of our NI Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
+                        typeAgentMessage(greeting, () => {
+                            // This runs after typing is complete
+                            showOptions([
+                                { text: 'Industry Solutions', nextStep: 2 },
+                                { text: 'Products', nextStep: 3 },
+                                { text: 'Connect me to a Sales Rep', nextStep: 10 }
+                            ]);
+                        });
+                    }, 1000); // 1 second delay
                     break;
                 
                 // --- PATH 1: Industry Solutions ---
