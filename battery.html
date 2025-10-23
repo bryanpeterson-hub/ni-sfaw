@@ -397,10 +397,10 @@
         // --- Add Agent Joined Message ---
         function addAgentJoinedMessage() { /* ... function exists but not called ... */ }
 
-        // --- NEW: Show Thinking Indicator ---
+        // --- Show Thinking Indicator ---
         function showThinkingIndicator() {
             const container = document.createElement('div');
-            container.className = 'agent-message-container'; // Use the same container for layout consistency
+            container.className = 'agent-message-container'; 
             const avatar = document.createElement('img');
             avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar';
             container.appendChild(avatar);
@@ -410,7 +410,6 @@
             typingIndicator.className = 'typing-indicator'; 
             typingIndicator.innerHTML = '<span></span><span></span><span></span>';
             msg.appendChild(typingIndicator);
-            // Add timestamp to the thinking indicator bubble
             const timestampSpan = document.createElement('span');
             timestampSpan.className = 'block text-xs text-gray-500 mt-1'; 
             timestampSpan.textContent = getCurrentTime();
@@ -419,17 +418,16 @@
             container.appendChild(msg);
             chatMessages.appendChild(container); 
             scrollToBottom();
-            return container; // Return the element so it can be removed
+            return container; 
         }
 
-        // --- Typing Simulation (Accepts indicator to remove and onStart callback) ---
+        // --- Typing Simulation ---
         function typeAgentMessage(fullText, onComplete, indicatorElementToRemove = null, onTypingStart = null) {
             const container = document.createElement('div'); container.className = 'agent-message-container';
             const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent'; container.appendChild(msg);
             const contentDiv = document.createElement('div'); 
-            // Don't show typing indicator initially if we had a thinking indicator
-            if (!indicatorElementToRemove) {
+            if (!indicatorElementToRemove) { // Only show initial dots if NOT removing a thinking indicator
                 const typingIndicator = document.createElement('div'); typingIndicator.className = 'typing-indicator'; typingIndicator.innerHTML = '<span></span><span></span><span></span>'; contentDiv.appendChild(typingIndicator); 
             }
             msg.appendChild(contentDiv);
@@ -439,15 +437,9 @@
             function typeChar() {
                 if (i < fullText.length) {
                     if (i === 0) {
-                        // Remove the thinking indicator when typing starts
-                        if (indicatorElementToRemove) {
-                            indicatorElementToRemove.remove();
-                        }
-                        // Trigger the onTypingStart callback
-                        if (onTypingStart) {
-                            onTypingStart();
-                        }
-                        contentDiv.innerHTML = ''; // Clear content (removes initial indicator if shown)
+                        if (indicatorElementToRemove) indicatorElementToRemove.remove();
+                        if (onTypingStart) onTypingStart();
+                        contentDiv.innerHTML = ''; 
                     }
                     contentDiv.innerHTML += fullText.charAt(i); i++;
                     scrollToBottom(); setTimeout(typeChar, typingSpeed);
@@ -457,13 +449,14 @@
                     if (onComplete) { setTimeout(onComplete, 50); }
                 }
             }
-            // Use a minimal delay before starting typing (just to allow indicator removal/callback)
-            setTimeout(typeChar, 50); 
+            // Use minimal delay if removing indicator, else standard delay
+            const startDelay = indicatorElementToRemove ? 50 : 1000; 
+            setTimeout(typeChar, startDelay); 
         }
 
         // --- Add Standard Agent Message ---
         function addAgentMessage(text) {
-             // ... (no changes needed here) ...
+             // ... (no changes) ...
             const container = document.createElement('div'); container.className = 'agent-message-container';
             const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent';
@@ -474,7 +467,7 @@
 
         // --- Add Agent Message with CTA ---
         function addCTAMessage(text, ctaText, ctaLink) {
-             // ... (no changes needed here) ...
+             // ... (no changes) ...
             const container = document.createElement('div'); container.className = 'agent-message-container';
             const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent';
@@ -489,7 +482,7 @@
 
         // --- Add User Message ---
         function addUserMessage(text) {
-             // ... (no changes needed here) ...
+             // ... (no changes) ...
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-user';
             const contentDiv = document.createElement('div'); contentDiv.innerHTML = text; msg.appendChild(contentDiv);
             const timestampSpan = document.createElement('span'); timestampSpan.className = 'block text-xs text-white opacity-70 mt-1'; timestampSpan.textContent = getCurrentTime(); msg.appendChild(timestampSpan);
@@ -498,7 +491,7 @@
 
         // --- Show Buttons ---
         function showOptions(options) {
-             // ... (no changes needed here) ...
+             // ... (no changes) ...
             scrollToBottom(); 
             setTimeout(() => {
                 chatOptions.innerHTML = ''; 
@@ -516,7 +509,8 @@
             addUserMessage(userText);
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             if (currentStep === 1.6) {
-                 updateRecommendationsAndContinueChat(); // No extra delay here needed now
+                 // Trigger update with 2s delay
+                 showSpecsAndUpdateRecs(); 
             } else { 
                  setTimeout(() => { runStep(nextStep); }, 1200);
             }
@@ -532,7 +526,8 @@
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             
              if (currentStep === 1.6) { 
-                 updateRecommendationsAndContinueChat(); // Trigger update immediately on submit
+                 // Trigger update with 2s delay
+                 showSpecsAndUpdateRecs(); 
              } else { 
                  setTimeout(() => {
                     addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
@@ -565,35 +560,38 @@
                 </div>
             `;
         }
+         //--- NEW: Helper Function for Specs Recommendations ---
+         function getSpecsRecommendationsHTML() {
+             return `
+                 <div class="space-y-4"> 
+                     <div class="animate-fade-in bg-white p-3 rounded shadow"> <img src="https://ni.scene7.com/is/image/ni/2549624_nhr_9300_high_voltage_battery_test_system_960x540?fmt=png-alpha&scl=1" alt="NHR-9300" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">NHR-9300 High-Voltage Battery Test System</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">High-voltage battery test system designed for electric vehicles (EV), renewable energy storage, and critical power applications.</p> <a href="#" class="text-xs font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
+                     <div class="animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.1s;"> <img src="https://ni.scene7.com/is/image/ni/NI_ERS_BIC_960x540?fmt=png-alpha&scl=1" alt="ERS-BIC" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">ERS-BIC Bidirectional DC Power Supply</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">High-performance bidirectional DC source and load based on silicon carbide (SiC) technology.</p> <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
+                     <div class="animate-fade-in bg-white p-3 rounded shadow" style="animation-delay: 0.2s;"> <img src="https://ni.scene7.com/is/image/ni/NI_HPS_17000_16x9?fmt=png-alpha&scl=1" alt="HPS-17000" class="w-full h-24 object-contain rounded mb-2"> <h4 class="font-semibold text-gray-800 text-sm">HPS-17000 Battery Cycler and Emulator</h4> <p class="text-xs ni-text-blue mb-1 leading-tight">Test and validate EV battery packs up to 1,500 volts with low- and high-voltage modes.</p> <a href="#" class="text-sm font-medium ni-text-blue hover:underline">Learn More &rarr;</a> </div>
+                 </div>
+             `;
+         }
+
 
         // --- UPDATED Function to handle timing ---
-        function updateRecommendationsAndContinueChat() {
+        function showSpecsAndUpdateRecs() { // Renamed for clarity
             // Show thinking indicator immediately
             const thinkingIndicator = showThinkingIndicator(); 
             
             // Add 2 second pause BEFORE agent starts typing
             setTimeout(() => {
-                // Prepare the function that will animate/update the panel
+                // Prepare the function that will update the panel content
                 const startPanelUpdate = () => {
-                    // Expand container
-                    combinedPanelsContainer.classList.remove('md:w-2/5', 'max-w-2xl');
-                    combinedPanelsContainer.classList.add('md:w-3/5', 'max-w-4xl');
-                    // Expand recommendations panel
-                    recommendationsPanel.classList.remove('w-1/2');
-                    recommendationsPanel.classList.add('w-2/3');
-                    // Shrink chat panel
-                    chatPanel.classList.remove('w-1/2');
-                    chatPanel.classList.add('w-1/3');
-                    // Update recommendations content
-                    recommendationsContent.innerHTML = getUpdatedRecommendationsHTML();
+                    // Update recommendations content ONLY
+                    // Keep panel width the same (already expanded from previous interaction)
+                    recommendationsContent.innerHTML = getSpecsRecommendationsHTML(); 
                 };
                 
-                // Start agent typing response, passing the panel update function
-                // as the onTypingStart callback and the indicator to remove
-                runStep(2, thinkingIndicator, startPanelUpdate); 
+                // Start agent typing response (Step 32), passing callbacks
+                runStep(32, thinkingIndicator, startPanelUpdate); 
 
             }, 2000); // 2 second thinking pause
         }
+
 
         // --- UPDATED DEMO SCRIPT ---
         function runStep(step, indicatorElementToRemove = null, onTypingStartCallback = null) {
@@ -625,11 +623,35 @@
                     typeAgentMessage(validationResponse, null, indicatorElementToRemove, onTypingStartCallback); // Type response, then pause
                     break;
 
+                 // --- Step 32 triggered after delay by showSpecsAndUpdateRecs ---
+                 case 32: 
+                     // User message added & Recommendations update triggered by onTypingStartCallback
+                     const specsResponse = "Here are the key specifications for the High-Voltage Battery Test Systems. I've populated the content panel on your right with more details, including compatible chassis and software.";
+                     chatOptions.innerHTML = ''; // Clear options if any
+                     // Type the response, pass indicator and panel update callback
+                     // After typing, wait 1s then ask about meeting (step 33)
+                     typeAgentMessage(specsResponse, () => {
+                         setTimeout(() => { runStep(33); }, 1000); 
+                     }, indicatorElementToRemove, onTypingStartCallback); 
+                     break;
+
+                 // --- NEW Step 33 after showing specs ---
+                 case 33:
+                     const meetingQuestion = "Would you like me to schedule a meeting with a Sales rep?";
+                     // Type the question, then show buttons
+                     typeAgentMessage(meetingQuestion, () => {
+                         showOptions([
+                             { text: 'Yes, connect me', nextStep: 10 },
+                             { text: 'Maybe later', nextStep: 99 } // Go back to challenge options
+                         ]);
+                     });
+                     break;
+
                 // --- Other steps remain reachable via potential future button clicks ---               
                 case 3: 
                 case 30: 
                 case 31: 
-                case 32: 
+                // case 32: // Repurposed above
                 case 40: 
                 case 41: 
                 case 42: 
@@ -653,15 +675,7 @@
                             showOptions([ { text: 'Show Cycler Specs', nextStep: 32 }, { text: 'Connect me to Sales', nextStep: 10 }, { text: 'Back to start', nextStep: 99 } ]); 
                         }, 800); 
                     }
-                     else if (step === 32) {
-                        addAgentMessage("Here are the key specs for the HV-1200 Battery Cycler:");
-                        const specsHTML = getSpecsHTML_32(); 
-                        addAgentMessage(specsHTML); 
-                        setTimeout(() => {
-                            addAgentMessage("This requires careful configuration...");
-                            showOptions([ { text: 'Connect me to Sales', nextStep: 10 }, { text: 'Back to start', nextStep: 99 } ]);
-                        }, 800);
-                    }
+                    // Step 32 logic is now the main path after user input
                      else if (step === 40) {
                          addAgentMessage("PXI is our modular, high-performance platform...");
                          addAgentMessage("Would you like to explore PXI hardware details...");
@@ -705,8 +719,8 @@
                              showOptions([{ text: 'Start Over', nextStep: 99 }, { text: 'No, I\'m done', nextStep: 100 }]);
                          }, 1000);
                     }
-                    else if (step === 99) {
-                         addAgentMessage("Okay, what else can I help you with?");
+                    else if (step === 99) { // Start Over now goes back to the challenge question options
+                         addAgentMessage("Okay, what else can I help you with regarding your primary challenge?");
                          showOptions([{ text: 'Performance Validation', nextStep: 2 }, { text: 'Lifecycle Testing', nextStep: 2 }, { text: 'End-of-Line Manufacturing', nextStep: 2 } ]);
                     }
                     else if (step === 100) {
@@ -722,9 +736,7 @@
         function getCaseStudyHTML_31() {
              return `<div class="p-3 bg-white rounded-lg border border-gray-200"><img src="https://ni.scene7.com/is/image/ni/AdobeStock_236859072_logo_539x399?scl=1" alt="BMW Group" class="w-full h-32 object-cover rounded mb-2"><h4 class="font-semibold text-gray-900">Shifting Left in Validation</h4><p class="text-sm text-gray-700">The BMW Group is using a digital twin approach to identify design weaknesses earlier.</p><a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Read the full story &rarr;</a></div>`;
         }
-        function getSpecsHTML_32() {
-            return `<div class="p-3 bg-white rounded-lg border border-gray-200"><h4 class="font-semibold ni-text-blue">HV-1200 Battery Cycler</h4><ul class="list-disc list-inside text-sm text-gray-700 mt-2"><li>Up to 1200 V per channel</li><li>Up to 600 A per channel</li><li>Regenerative power</li><li>PXI-based for easy integration</li></ul></div>`;
-        }
+        // Removed getSpecsHTML_32 as step 32 is now different
          function getPxiHTML_42() {
              return `<div class="p-3 bg-white rounded-lg border border-gray-200"><h4 class="font-semibold ni-text-blue">PXI Product Families</h4><ul class="list-disc list-inside text-sm text-gray-700 mt-2"><li><b>Chassis:</b> The backbone of your system.</li><li><b>Controllers:</b> Embedded or remote control.</li><li><b>Modules:</b> Hundreds of modules for I/O, instrumentation, and timing.</li></ul><a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Browse all PXI hardware &rarr;</a></div>`;
          }
