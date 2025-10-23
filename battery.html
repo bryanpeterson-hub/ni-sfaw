@@ -388,19 +388,15 @@
         </div>
     </footer>
 
-    <!-- 
-      AGENTIC INITIATION COMPONENT (Hidden by default now)
-    -->
-    <div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50 hidden"> <!-- Added 'hidden' class -->
+    <!-- AGENTIC INITIATION COMPONENT (Hidden by default) -->
+    <div id="solution-finder-trigger" class="fixed bottom-8 right-8 z-50 hidden"> 
         <button class="pulse-button ni-bg-finder-green text-white font-bold py-4 px-6 rounded-full shadow-2xl text-lg flex items-center">
             <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
             NI Solution Finder
         </button>
     </div>
 
-    <!-- 
-      DEMO CONTAINER
-    -->
+    <!-- DEMO CONTAINER -->
     <div id="demo-container" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center p-4 md:p-8">
         <div class="flex flex-col h-[60vh] w-full md:w-1/4 max-w-md bg-white rounded-xl shadow-2xl overflow-hidden relative ml-auto">
             <!-- Chat Panel -->
@@ -437,7 +433,7 @@
     </div>
 
     <!-- 
-      DEMO JAVASCRIPT: Updated startDemo and runStep(1)
+      DEMO JAVASCRIPT: Updated startDemo and runStep(1.5 / 1.6)
     -->
     <script>
         // --- Demo State Management ---
@@ -447,13 +443,12 @@
         const chatInput = document.getElementById('chat-input');
         const agentAvatarUrl = 'https://www.ni.com/favicon-32x32.png'; 
         let currentStep = 0; 
-        const heroHeadline = document.getElementById('hero-headline'); // Added for personalization
-        const heroSubhead = document.getElementById('hero-subhead'); // Added for personalization
+        const heroHeadline = document.getElementById('hero-headline'); 
+        const heroSubhead = document.getElementById('hero-subhead'); 
         
         // --- Demo Flow Logic ---
         
         function startDemo() {
-            // Immediately hide button, show modal
             document.getElementById('solution-finder-trigger').classList.add('hidden');
             document.getElementById('demo-container').classList.remove('hidden');
             // Start the conversation mid-flow
@@ -462,12 +457,11 @@
         
         function resetDemo() {
             document.getElementById('demo-container').classList.add('hidden');
-            // Make button visible again on reset for manual testing if needed
             // document.getElementById('solution-finder-trigger').classList.remove('hidden'); 
             chatMessages.innerHTML = '';
             chatOptions.innerHTML = '';
             chatInput.value = ''; 
-            initializePersonalization(); // Reset hero content
+            initializePersonalization(); 
         }
 
         // --- Get current time ---
@@ -475,7 +469,7 @@
             return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
         }
         
-        // --- Add Agent Joined Message (Not used in this auto-start flow) ---
+        // --- Add Agent Joined Message ---
         function addAgentJoinedMessage() { /* ... function exists but not called ... */ }
 
         // --- Typing Simulation ---
@@ -627,7 +621,7 @@
             chatInput.value = '';
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             
-            // In this version, user input after initial load just gets canned response
+            // Text input always gets canned response in this auto-start version
              setTimeout(() => {
                 addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
                 runStep(99); 
@@ -650,39 +644,38 @@
                     // This case is no longer the entry point
                     break; 
 
-                case 1.5: // Agent Response with CTA (Now the entry point)
+                case 1.5: // Agent Response with CTA (Now the entry point, STATIC)
                     const ctaIntro = "Great, I can help with exploring our EV battery test solutions. Here's where you can find more information:";
-                    typeAgentMessage(ctaIntro, () => {
-                         addCTAMessage("", "EV Battery Testing Solutions", "https://ni-adaptive-website-demo-edd7ba489258.herokuapp.com/battery.html"); 
-                         // Trigger next agent message immediately after CTA appears
-                         runStep(1.6); 
-                    });
+                    // Use addAgentMessage and addCTAMessage for instant display
+                    addAgentMessage(ctaIntro); 
+                    addCTAMessage("", "EV Battery Testing Solutions", "https://ni-adaptive-website-demo-edd7ba489258.herokuapp.com/battery.html"); 
+                    // Trigger next agent message immediately
+                    runStep(1.6); 
                     break;
                 
-                case 1.6: // Agent Follow-up Question (Typed)
+                case 1.6: // Agent Follow-up Question (STATIC)
                     const challengeQuestion = "What's your primary challenge: performance validation, lifecycle testing, or end-of-line manufacturing?";
-                    typeAgentMessage(challengeQuestion, () => {
-                        // Show buttons *after* typing finishes
-                        showOptions([
-                            { text: 'Performance Validation', nextStep: 2 }, 
-                            { text: 'Lifecycle Testing', nextStep: 2 },
-                            { text: 'End-of-Line Manufacturing', nextStep: 2 } 
-                        ]);
-                    });
+                    // Use addAgentMessage for instant display
+                    addAgentMessage(challengeQuestion);
+                    // Show buttons immediately
+                    showOptions([
+                        { text: 'Performance Validation', nextStep: 2 }, 
+                        { text: 'Lifecycle Testing', nextStep: 2 },
+                        { text: 'End-of-Line Manufacturing', nextStep: 2 } 
+                    ]);
                     break;
 
                 // --- PATH 1: Industry Solutions ---
-                case 2: 
+                case 2: // This is triggered by button click, responses can be instant
                     addAgentMessage("Understood. We have strong capabilities in that area, especially with our PXI-based systems.");
-                    setTimeout(() => {
-                        addAgentMessage("A common product for this is our High-Voltage Battery Cycler. Would you like to see specs for that, or perhaps a relevant case study?");
-                        showOptions([
-                            { text: 'Show Cycler Specs', nextStep: 32 }, 
-                            { text: 'Show me a case study', nextStep: 31 }, 
-                            { text: 'Connect me to Sales', nextStep: 10 },
-                            { text: 'Back to start', nextStep: 99 }
-                        ]);
-                    }, 1500);
+                    // No need for setTimeout if response is instant
+                    addAgentMessage("A common product for this is our High-Voltage Battery Cycler. Would you like to see specs for that, or perhaps a relevant case study?");
+                    showOptions([
+                        { text: 'Show Cycler Specs', nextStep: 32 }, 
+                        { text: 'Show me a case study', nextStep: 31 }, 
+                        { text: 'Connect me to Sales', nextStep: 10 },
+                        { text: 'Back to start', nextStep: 99 }
+                    ]);
                     break;
 
                 // --- PATH 2: Products ---
@@ -696,34 +689,31 @@
                     ]);
                     break;
                 
-                 // --- Other steps (30, 31, 32, 40, 41, 42, 43, 10) remain the same ---
+                 // --- Other steps (30, 31, 32, 40, 41, 42, 43, 10) remain largely the same, using addAgentMessage ---
                
                 case 30: // EV Test Info
                     addAgentMessage("Our EV Test solutions cover everything from battery and inverter test to ADAS validation. A key product is our High-Voltage Battery Cycler.");
-                    setTimeout(() => {
-                        addAgentMessage("I can give you the specs for that, show you a case study, or connect you with a sales rep.");
-                         showOptions([
-                            { text: 'Show Cycler Specs', nextStep: 32 },
-                            { text: 'Show me a case study', nextStep: 31 }, 
-                            { text: 'Connect me to Sales', nextStep: 10 },
-                            { text: 'Back to start', nextStep: 99 }
-                        ]);
-                    }, 1000);
+                    addAgentMessage("I can give you the specs for that, show you a case study, or connect you with a sales rep.");
+                    showOptions([
+                        { text: 'Show Cycler Specs', nextStep: 32 },
+                        { text: 'Show me a case study', nextStep: 31 }, 
+                        { text: 'Connect me to Sales', nextStep: 10 },
+                        { text: 'Back to start', nextStep: 99 }
+                    ]);
                     break;
                 
                 case 31: // Show Case Study (BMW)
                     addAgentMessage("Great choice. Here is a recent case study about how the BMW Group is using our digital twin solutions to accelerate validation.");
-                    setTimeout(() => {
-                        const caseStudyHTML = `
-                            <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                <img src="https://ni.scene7.com/is/image/ni/AdobeStock_236859072_logo_539x399?scl=1" alt="BMW Group" class="w-full h-32 object-cover rounded mb-2">
-                                <h4 class="font-semibold text-gray-900">Shifting Left in Validation</h4>
-                                <p class="text-sm text-gray-700">The BMW Group is using a digital twin approach to identify design weaknesses earlier.</p>
-                                <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Read the full story &rarr;</a>
-                            </div>
-                        `;
-                        addAgentMessage(caseStudyHTML);
-                    }, 500);
+                    const caseStudyHTML = `
+                        <div class="p-3 bg-white rounded-lg border border-gray-200">
+                            <img src="https://ni.scene7.com/is/image/ni/AdobeStock_236859072_logo_539x399?scl=1" alt="BMW Group" class="w-full h-32 object-cover rounded mb-2">
+                            <h4 class="font-semibold text-gray-900">Shifting Left in Validation</h4>
+                            <p class="text-sm text-gray-700">The BMW Group is using a digital twin approach to identify design weaknesses earlier.</p>
+                            <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Read the full story &rarr;</a>
+                        </div>
+                    `;
+                    addAgentMessage(caseStudyHTML); // Add card instantly
+                    // Use setTimeout just to pace the conversation slightly
                     setTimeout(() => {
                         addAgentMessage("Would you like to see product specs or talk to sales?");
                         showOptions([
@@ -731,112 +721,100 @@
                             { text: 'Connect me to Sales', nextStep: 10 },
                             { text: 'Back to start', nextStep: 99 }
                         ]);
-                    }, 1500);
+                    }, 800); 
                     break;
                 
                 case 32: // Show Cycler Specs
                     addAgentMessage("Here are the key specs for the HV-1200 Battery Cycler:");
-                     setTimeout(() => {
-                        const specsHTML = `
-                            <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                <h4 class="font-semibold ni-text-blue">HV-1200 Battery Cycler</h4>
-                                <ul class="list-disc list-inside text-sm text-gray-700 mt-2">
-                                    <li>Up to 1200 V per channel</li>
-                                    <li>Up to 600 A per channel</li>
-                                    <li>Regenerative power</li>
-                                    <li>PXI-based for easy integration</li>
-                                </ul>
-                            </div>
-                        `;
-                        addAgentMessage(specsHTML);
-                    }, 500);
+                    const specsHTML = `
+                        <div class="p-3 bg-white rounded-lg border border-gray-200">
+                            <h4 class="font-semibold ni-text-blue">HV-1200 Battery Cycler</h4>
+                            <ul class="list-disc list-inside text-sm text-gray-700 mt-2">
+                                <li>Up to 1200 V per channel</li>
+                                <li>Up to 600 A per channel</li>
+                                <li>Regenerative power</li>
+                                <li>PXI-based for easy integration</li>
+                            </ul>
+                        </div>
+                    `;
+                    addAgentMessage(specsHTML); // Add card instantly
+                    // Use setTimeout just to pace the conversation slightly
                      setTimeout(() => {
                         addAgentMessage("This requires careful configuration. I recommend speaking with a sales rep.");
                         showOptions([
                             { text: 'Connect me to Sales', nextStep: 10 },
                             { text: 'Back to start', nextStep: 99 }
                         ]);
-                    }, 1500);
+                    }, 800);
                     break;
 
                 case 40: // User chooses PXI
                     addAgentMessage("PXI is our modular, high-performance platform for automated test and measurement. It's the foundation for our EV test solutions.");
-                    setTimeout(() => {
-                        addAgentMessage("Would you like to explore PXI hardware details, or see the EV Battery Cycler that runs on PXI?");
-                        showOptions([
-                            { text: 'Show PXI hardware', nextStep: 42 },
-                            { text: 'Show EV Battery Cycler', nextStep: 32 },
-                            { text: 'Back to start', nextStep: 99 }
-                        ]);
-                    }, 1000);
+                    addAgentMessage("Would you like to explore PXI hardware details, or see the EV Battery Cycler that runs on PXI?");
+                    showOptions([
+                        { text: 'Show PXI hardware', nextStep: 42 },
+                        { text: 'Show EV Battery Cycler', nextStep: 32 },
+                        { text: 'Back to start', nextStep: 99 }
+                    ]);
                     break;
                 
                 case 41: // User chooses LabVIEW or TestStand
                     addAgentMessage("LabVIEW is our graphical programming environment, and TestStand is our test management software. They are powerful tools for building any test system.");
-                    setTimeout(() => {
-                        addAgentMessage("Would you like to see a demo, or talk to a sales rep about your needs?");
-                        showOptions([
-                            { text: 'See a demo (link)', nextStep: 43 },
-                            { text: 'Connect me to Sales', nextStep: 10 },
-                            { text: 'Back to start', nextStep: 99 }
-                        ]);
-                    }, 1000);
+                    addAgentMessage("Would you like to see a demo, or talk to a sales rep about your needs?");
+                    showOptions([
+                        { text: 'See a demo (link)', nextStep: 43 },
+                        { text: 'Connect me to Sales', nextStep: 10 },
+                        { text: 'Back to start', nextStep: 99 }
+                    ]);
                     break;
 
                 case 42: // Show PXI Hardware
                     addAgentMessage("Here are some of our most popular PXI product categories:");
-                     setTimeout(() => {
-                        const pxiHTML = `
-                            <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                <h4 class="font-semibold ni-text-blue">PXI Product Families</h4>
-                                <ul class="list-disc list-inside text-sm text-gray-700 mt-2">
-                                    <li><b>Chassis:</b> The backbone of your system.</li>
-                                    <li><b>Controllers:</b> Embedded or remote control.</li>
-                                    <li><b>Modules:</b> Hundreds of modules for I/O, instrumentation, and timing.</li>
-                                </ul>
-                                <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Browse all PXI hardware &rarr;</a>
-                            </div>
-                        `;
-                        addAgentMessage(pxiHTML);
-                    }, 500);
+                    const pxiHTML = `
+                        <div class="p-3 bg-white rounded-lg border border-gray-200">
+                            <h4 class="font-semibold ni-text-blue">PXI Product Families</h4>
+                            <ul class="list-disc list-inside text-sm text-gray-700 mt-2">
+                                <li><b>Chassis:</b> The backbone of your system.</li>
+                                <li><b>Controllers:</b> Embedded or remote control.</li>
+                                <li><b>Modules:</b> Hundreds of modules for I/O, instrumentation, and timing.</li>
+                            </ul>
+                            <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Browse all PXI hardware &rarr;</a>
+                        </div>
+                    `;
+                    addAgentMessage(pxiHTML); // Add card instantly
                      setTimeout(() => {
                         addAgentMessage("Building a PXI system is best done with an expert. Can I connect you with a sales rep?");
                         showOptions([
                             { text: 'Yes, connect me', nextStep: 10 },
                             { text: 'Back to start', nextStep: 99 }
                         ]);
-                    }, 1500);
+                    }, 800);
                     break;
                 
                  case 43: // Show Demo Link
                     addAgentMessage("Here is a link to a 5-minute demo video on LabVIEW.");
-                     setTimeout(() => {
-                        const demoHTML = `
-                            <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                <img src="https://placehold.co/400x200/003c71/9fcd3a?text=LabVIEW+Demo" alt="LabVIEW Demo" class="w-full h-32 object-cover rounded mb-2">
-                                <h4 class="font-semibold text-gray-900">LabVIEW in 5 Minutes</h4>
-                                <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Watch the video &rarr;</a>
-                            </div>
-                        `;
-                        addAgentMessage(demoHTML);
-                    }, 500);
+                    const demoHTML = `
+                        <div class="p-3 bg-white rounded-lg border border-gray-200">
+                            <img src="https://placehold.co/400x200/003c71/9fcd3a?text=LabVIEW+Demo" alt="LabVIEW Demo" class="w-full h-32 object-cover rounded mb-2">
+                            <h4 class="font-semibold text-gray-900">LabVIEW in 5 Minutes</h4>
+                            <a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Watch the video &rarr;</a>
+                        </div>
+                    `;
+                    addAgentMessage(demoHTML); // Add card instantly
                      setTimeout(() => {
                         showOptions([
                             { text: 'Connect me to Sales', nextStep: 10 },
                             { text: 'Back to start', nextStep: 99 }
                         ]);
-                    }, 1500);
+                    }, 800);
                     break;
 
                 // --- PATH 3: Connect Sales Rep ---
                 case 10: 
                     addAgentMessage("Great! Connecting you with a sales rep is the best way to get a configured solution. I just need a few details.");
-                    setTimeout(() => {
-                        addAgentMessage("Please enter your name, company, and email below. <br><br> <i>[Demo: Form would appear here]</i>");
-                        // Don't show buttons here, wait for simulated form fill
-                    }, 1000);
+                    addAgentMessage("Please enter your name, company, and email below. <br><br> <i>[Demo: Form would appear here]</i>");
+                     // Simulate form fill after a delay
                      setTimeout(() => {
-                        // Simulate form fill
                         const formHTML = `
                             <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 text-sm">
                                 <p><b>Name:</b> Raj Singh</p>
@@ -844,9 +822,9 @@
                                 <p><b>Email:</b> raj.singh@tier1-auto.com</p>
                             </div>
                         `;
-                        addUserMessage(formHTML); // User "submits" form
-                         runStep(10.1); // Trigger confirmation
-                    }, 3000);
+                        addUserMessage(formHTML); 
+                         runStep(10.1); 
+                    }, 2500); // Wait longer for "form fill"
                     break;
                 
                  case 10.1: // Confirmation after form submit
@@ -863,7 +841,6 @@
                 // --- ENDING PATHS ---
                 case 99: // Back to start 
                     addAgentMessage("Okay, what else can I help you with?");
-                     // Go back to the options presented after the CTA/initial user response
                      showOptions([
                         { text: 'Performance Validation', nextStep: 2 }, 
                         { text: 'Lifecycle Testing', nextStep: 2 },
@@ -880,24 +857,18 @@
         
         // --- Page Personalization Logic ---
         function initializePersonalization() {
-            // In a real demo, this data would come from Data Cloud
             const userProfile = {
                 name: "Raj",
                 industry: "Automotive",
                 interest: "EV Battery Test"
             };
-
-            // Personalize Hero
             heroHeadline.textContent = 'Accelerate Your EV Battery Validation';
             heroSubhead.textContent = 'Design and deploy comprehensive test systems for every stage of the battery lifecycle, from R&D to production.';
-            
-            // For this hard-coded demo, other personalized elements are already set.
         }
 
         // Run personalization and auto-start demo when the page loads
         document.addEventListener('DOMContentLoaded', () => {
              initializePersonalization();
-             // Auto-start the demo after 1 second
              setTimeout(startDemo, 1000); 
         });
         
