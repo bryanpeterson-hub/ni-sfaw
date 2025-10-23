@@ -341,7 +341,7 @@
     </div>
 
     <!-- 
-      DEMO JAVASCRIPT: Updated updateRecommendationsAndContinueChat with delay
+      DEMO JAVASCRIPT: Updated updateRecommendationsAndContinueChat timing
     -->
     <script>
         // --- Demo State Management ---
@@ -397,18 +397,58 @@
         // --- Add Agent Joined Message ---
         function addAgentJoinedMessage() { /* ... function exists but not called ... */ }
 
-        // --- Typing Simulation ---
-        function typeAgentMessage(fullText, onComplete) {
+        // --- NEW: Show Thinking Indicator ---
+        function showThinkingIndicator() {
+            const container = document.createElement('div');
+            container.className = 'agent-message-container'; // Use the same container for layout consistency
+            const avatar = document.createElement('img');
+            avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar';
+            container.appendChild(avatar);
+            const msg = document.createElement('div');
+            msg.className = 'chat-bubble chat-bubble-agent'; 
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator'; 
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            msg.appendChild(typingIndicator);
+            // Add timestamp to the thinking indicator bubble
+            const timestampSpan = document.createElement('span');
+            timestampSpan.className = 'block text-xs text-gray-500 mt-1'; 
+            timestampSpan.textContent = getCurrentTime();
+            msg.appendChild(timestampSpan);
+            
+            container.appendChild(msg);
+            chatMessages.appendChild(container); 
+            scrollToBottom();
+            return container; // Return the element so it can be removed
+        }
+
+        // --- Typing Simulation (Accepts indicator to remove and onStart callback) ---
+        function typeAgentMessage(fullText, onComplete, indicatorElementToRemove = null, onTypingStart = null) {
             const container = document.createElement('div'); container.className = 'agent-message-container';
             const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent'; container.appendChild(msg);
             const contentDiv = document.createElement('div'); 
-            const typingIndicator = document.createElement('div'); typingIndicator.className = 'typing-indicator'; typingIndicator.innerHTML = '<span></span><span></span><span></span>'; contentDiv.appendChild(typingIndicator); msg.appendChild(contentDiv);
+            // Don't show typing indicator initially if we had a thinking indicator
+            if (!indicatorElementToRemove) {
+                const typingIndicator = document.createElement('div'); typingIndicator.className = 'typing-indicator'; typingIndicator.innerHTML = '<span></span><span></span><span></span>'; contentDiv.appendChild(typingIndicator); 
+            }
+            msg.appendChild(contentDiv);
             chatMessages.appendChild(container); scrollToBottom();
             let i = 0; const typingSpeed = 30; 
+            
             function typeChar() {
                 if (i < fullText.length) {
-                    if (i === 0) contentDiv.innerHTML = ''; 
+                    if (i === 0) {
+                        // Remove the thinking indicator when typing starts
+                        if (indicatorElementToRemove) {
+                            indicatorElementToRemove.remove();
+                        }
+                        // Trigger the onTypingStart callback
+                        if (onTypingStart) {
+                            onTypingStart();
+                        }
+                        contentDiv.innerHTML = ''; // Clear content (removes initial indicator if shown)
+                    }
                     contentDiv.innerHTML += fullText.charAt(i); i++;
                     scrollToBottom(); setTimeout(typeChar, typingSpeed);
                 } else {
@@ -417,12 +457,13 @@
                     if (onComplete) { setTimeout(onComplete, 50); }
                 }
             }
-            // Delay typing start slightly
-            setTimeout(typeChar, 200); 
+            // Use a minimal delay before starting typing (just to allow indicator removal/callback)
+            setTimeout(typeChar, 50); 
         }
 
         // --- Add Standard Agent Message ---
         function addAgentMessage(text) {
+             // ... (no changes needed here) ...
             const container = document.createElement('div'); container.className = 'agent-message-container';
             const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent';
@@ -433,6 +474,7 @@
 
         // --- Add Agent Message with CTA ---
         function addCTAMessage(text, ctaText, ctaLink) {
+             // ... (no changes needed here) ...
             const container = document.createElement('div'); container.className = 'agent-message-container';
             const avatar = document.createElement('img'); avatar.src = agentAvatarUrl; avatar.alt = "Agent Avatar"; avatar.className = 'agent-avatar'; container.appendChild(avatar);
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-agent';
@@ -447,6 +489,7 @@
 
         // --- Add User Message ---
         function addUserMessage(text) {
+             // ... (no changes needed here) ...
             const msg = document.createElement('div'); msg.className = 'chat-bubble chat-bubble-user';
             const contentDiv = document.createElement('div'); contentDiv.innerHTML = text; msg.appendChild(contentDiv);
             const timestampSpan = document.createElement('span'); timestampSpan.className = 'block text-xs text-white opacity-70 mt-1'; timestampSpan.textContent = getCurrentTime(); msg.appendChild(timestampSpan);
@@ -455,6 +498,7 @@
 
         // --- Show Buttons ---
         function showOptions(options) {
+             // ... (no changes needed here) ...
             scrollToBottom(); 
             setTimeout(() => {
                 chatOptions.innerHTML = ''; 
@@ -472,8 +516,7 @@
             addUserMessage(userText);
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             if (currentStep === 1.6) {
-                 // Add 2 second delay before triggering update + continue
-                 setTimeout(() => { updateRecommendationsAndContinueChat(); }, 2000); 
+                 updateRecommendationsAndContinueChat(); // No extra delay here needed now
             } else { 
                  setTimeout(() => { runStep(nextStep); }, 1200);
             }
@@ -489,10 +532,7 @@
             chatOptions.innerHTML = '<p class="text-sm text-gray-500 italic">Thinking...</p>';
             
              if (currentStep === 1.6) { 
-                 // Add 2 second delay before triggering update + continue
-                 setTimeout(() => {
-                     updateRecommendationsAndContinueChat(); 
-                 }, 2000); 
+                 updateRecommendationsAndContinueChat(); // Trigger update immediately on submit
              } else { 
                  setTimeout(() => {
                     addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
@@ -528,33 +568,35 @@
 
         // --- UPDATED Function to handle timing ---
         function updateRecommendationsAndContinueChat() {
+            // Show thinking indicator immediately
+            const thinkingIndicator = showThinkingIndicator(); 
+            
             // Add 2 second pause BEFORE agent starts typing
             setTimeout(() => {
-                // Start agent typing response FIRST
-                runStep(2); 
-
-                // AFTER agent starts typing (controlled by delay in typeAgentMessage), animate panel width and update content
-                setTimeout(() => {
+                // Prepare the function that will animate/update the panel
+                const startPanelUpdate = () => {
                     // Expand container
                     combinedPanelsContainer.classList.remove('md:w-2/5', 'max-w-2xl');
                     combinedPanelsContainer.classList.add('md:w-3/5', 'max-w-4xl');
-                    
                     // Expand recommendations panel
                     recommendationsPanel.classList.remove('w-1/2');
                     recommendationsPanel.classList.add('w-2/3');
-
                     // Shrink chat panel
                     chatPanel.classList.remove('w-1/2');
                     chatPanel.classList.add('w-1/3');
-                    
                     // Update recommendations content
                     recommendationsContent.innerHTML = getUpdatedRecommendationsHTML();
-                }, 200); // Small delay matches typing start delay
+                };
+                
+                // Start agent typing response, passing the panel update function
+                // as the onTypingStart callback and the indicator to remove
+                runStep(2, thinkingIndicator, startPanelUpdate); 
+
             }, 2000); // 2 second thinking pause
         }
 
         // --- UPDATED DEMO SCRIPT ---
-        function runStep(step) {
+        function runStep(step, indicatorElementToRemove = null, onTypingStartCallback = null) {
             currentStep = step; 
 
             switch (step) {
@@ -576,10 +618,11 @@
 
                 // --- Step 2 triggered after delay by updateRecommendationsAndContinueChat ---
                 case 2: 
-                    // User message added & Recommendations updated by triggering function
+                    // User message added & Recommendations update triggered by onTypingStartCallback
                     const validationResponse = "Understood. Lifecycle validation is a core strength. Our PXI-based systems are the industry standard for this. Based on your goal, I can pull up specifications for our High-Voltage Battery Cycler, or would you prefer to see an application note on 'Simulating Real-World Driving Profiles'?";
                     chatOptions.innerHTML = ''; 
-                    typeAgentMessage(validationResponse); // Type response, then pause
+                    // Pass indicator and onStart callback to typeAgentMessage
+                    typeAgentMessage(validationResponse, null, indicatorElementToRemove, onTypingStartCallback); // Type response, then pause
                     break;
 
                 // --- Other steps remain reachable via potential future button clicks ---               
@@ -595,19 +638,15 @@
                 case 10.1: 
                 case 99: 
                 case 100: 
-                    // These steps use addAgentMessage and showOptions as before
                     // (Simplified for brevity, content is the same as previous version)
-                    // Example:
                     if (step === 30) {
                         addAgentMessage("Our EV Test solutions cover everything...");
                         addAgentMessage("I can give you the specs...");
-                        showOptions([ /* ... */ ]); 
+                        showOptions([ { text: 'Show Cycler Specs', nextStep: 32 }, { text: 'Show me a case study', nextStep: 31 }, { text: 'Connect me to Sales', nextStep: 10 }, { text: 'Back to start', nextStep: 99 } ]); 
                     }
-                    // ... include logic for all other steps here ...
-                    // Make sure to replace any typeAgentMessage with addAgentMessage if needed
                      else if (step === 31) {
                         addAgentMessage("Great choice. Here is a recent case study...");
-                        const caseStudyHTML = getCaseStudyHTML_31(); // Use helper if complex
+                        const caseStudyHTML = getCaseStudyHTML_31(); 
                         addAgentMessage(caseStudyHTML); 
                         setTimeout(() => {
                             addAgentMessage("Would you like to see product specs or talk to sales?");
@@ -616,7 +655,7 @@
                     }
                      else if (step === 32) {
                         addAgentMessage("Here are the key specs for the HV-1200 Battery Cycler:");
-                        const specsHTML = getSpecsHTML_32(); // Use helper
+                        const specsHTML = getSpecsHTML_32(); 
                         addAgentMessage(specsHTML); 
                         setTimeout(() => {
                             addAgentMessage("This requires careful configuration...");
@@ -635,7 +674,7 @@
                     }
                     else if (step === 42) {
                          addAgentMessage("Here are some of our most popular PXI product categories:");
-                         const pxiHTML = getPxiHTML_42(); // Use helper
+                         const pxiHTML = getPxiHTML_42(); 
                          addAgentMessage(pxiHTML); 
                          setTimeout(() => {
                              addAgentMessage("Building a PXI system is best done with an expert...");
@@ -644,7 +683,7 @@
                     }
                     else if (step === 43) {
                          addAgentMessage("Here is a link to a 5-minute demo video on LabVIEW.");
-                         const demoHTML = getDemoHTML_43(); // Use helper
+                         const demoHTML = getDemoHTML_43(); 
                          addAgentMessage(demoHTML); 
                          setTimeout(() => {
                              showOptions([{ text: 'Connect me to Sales', nextStep: 10 }, { text: 'Back to start', nextStep: 99 }]);
@@ -654,7 +693,7 @@
                          addAgentMessage("Great! Connecting you with a sales rep...");
                          addAgentMessage("Please enter your name, company, and email...");
                          setTimeout(() => {
-                             const formHTML = getFormHTML_10(); // Use helper
+                             const formHTML = getFormHTML_10(); 
                              addUserMessage(formHTML); 
                              runStep(10.1); 
                          }, 2500); 
@@ -679,7 +718,7 @@
             }
         }
 
-        // --- Helper functions for HTML content (to keep runStep cleaner) ---
+        // --- Helper functions for HTML content ---
         function getCaseStudyHTML_31() {
              return `<div class="p-3 bg-white rounded-lg border border-gray-200"><img src="https://ni.scene7.com/is/image/ni/AdobeStock_236859072_logo_539x399?scl=1" alt="BMW Group" class="w-full h-32 object-cover rounded mb-2"><h4 class="font-semibold text-gray-900">Shifting Left in Validation</h4><p class="text-sm text-gray-700">The BMW Group is using a digital twin approach to identify design weaknesses earlier.</p><a href="#" class="text-sm font-medium ni-text-blue hover:underline" target="_blank">Read the full story &rarr;</a></div>`;
         }
