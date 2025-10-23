@@ -166,15 +166,15 @@
             animation: fadeIn 0.5s ease-out;
         }
 
-        /* NEW: Datasheet button style */
+        /* Datasheet button style */
         .datasheet-button {
             display: inline-block;
             border: 1px solid var(--ni-blue);
             color: var(--ni-blue);
             padding: 0.3rem 0.8rem;
             border-radius: 9999px;
-            margin-top: 0.75rem; /* Increased margin */
-            font-size: 0.75rem; /* text-xs */
+            margin-top: 0.75rem; 
+            font-size: 0.75rem; 
             font-weight: 500;
             text-decoration: none;
             transition: all 0.2s ease;
@@ -304,7 +304,8 @@
             
             <!-- Recommendations Panel: Initial narrow width, transitions added -->
             <div id="recommendations-panel" class="w-1/2 border-r border-gray-200 p-4 overflow-y-auto transition-all duration-500 ease-out transform -translate-x-full bg-gray-50">
-                <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2">Recommendations</h3>
+                 <!-- Added sticky title -->
+                <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2 z-10">Recommendations</h3>
                 <!-- Content div -->
                  <div id="recommendations-content">
                     <!-- Initial Content Populated by JS -->
@@ -348,7 +349,7 @@
     </div>
 
     <!-- 
-      DEMO JAVASCRIPT: Updated step logic
+      DEMO JAVASCRIPT: Updated step logic for new chat flow
     -->
     <script>
         // --- Demo State Management ---
@@ -521,6 +522,8 @@
                  updateRecommendationsAndContinueChat(); 
             } else if (currentStep === 2) { 
                  showSpecsAndFinalRecs(); 
+            } else if (currentStep === 33 && nextStep === 99.1) { // Special case for "Maybe later"
+                 runStep(99.1); // Go to new email capture flow
             } else { 
                  setTimeout(() => { runStep(nextStep); }, 1200);
             }
@@ -539,12 +542,15 @@
                  updateRecommendationsAndContinueChat(); 
              } else if (currentStep === 2) { 
                  showSpecsAndFinalRecs(); 
+             } else if (currentStep === 99.1) { // If user provides email after step 99.1
+                 runStep(99.2);
              } else { 
                  setTimeout(() => {
                     addAgentMessage("Thanks for your message! For this click-through demo, please use the buttons to navigate the conversation path.");
-                    if (currentStep >= 32) runStep(99); 
-                    else if (currentStep >= 2) runStep(2); // If user types during pause after step 2, maybe just wait? Or re-offer options? Re-offering step 2 options for now.
-                    else if (currentStep >= 1.6) runStep(1.6); 
+                    // Re-show relevant buttons based on where they typed
+                    if (currentStep >= 33) runStep(99.3); // Show final options
+                    else if (currentStep >= 2) runStep(2); // Still deciding on specs/notes? Go back to step 2 pause state
+                    else if (currentStep >= 1.6) runStep(1.6); // Should not happen often, but reset to challenge question
                  }, 1200);
              }
         }
@@ -579,7 +585,7 @@
          function getSpecsRecommendationsHTML() {
               // Returns HTML for the final 3 recommendations (specs)
              return `
-                 <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2">Technical High-Voltage Battery Test System Highlights</h3>
+                 <h3 class="text-lg font-semibold ni-text-blue mb-4 sticky top-0 bg-gray-50 pb-2 z-10">Technical High-Voltage Battery Test System Highlights</h3>
                  <div class="space-y-4"> 
                      <div class="animate-fade-in bg-white p-3 rounded shadow flex flex-col"> 
                          <img src="https://ni.scene7.com/is/image/ni/2549624_nhr_9300_high_voltage_battery_test_system_960x540?fmt=png-alpha&scl=1" alt="NHR-9300" class="w-full h-24 object-contain rounded mb-2"> 
@@ -723,7 +729,7 @@
                      typeAgentMessage(meetingQuestion, () => {
                          showOptions([
                              { text: 'Yes, connect me', nextStep: 10 },
-                             { text: 'Maybe later', nextStep: 99 } 
+                             { text: 'Maybe later', nextStep: 99.1 } // Updated nextStep
                          ]);
                      });
                      break;
@@ -739,20 +745,11 @@
                 case 43: // Demo Link
                 case 10: // Connect Sales Start
                 case 10.1: // Connect Sales Confirm
-                case 99: // Start Over / Maybe Later
                 case 100: // Done
                     // (Simplified for brevity, ensure all addAgentMessage calls)
                      if (step === 3) { /* ... */ }
                     else if (step === 30) { /* ... */ }
-                    else if (step === 31) {
-                        addAgentMessage("Great choice. Here is a recent case study...");
-                        const caseStudyHTML = getCaseStudyHTML_31(); 
-                        addAgentMessage(caseStudyHTML); 
-                        setTimeout(() => {
-                            addAgentMessage("Would you like to see product specs or talk to sales?");
-                            showOptions([ { text: 'Show Specs', nextStep: 32 }, { text: 'Connect me to Sales', nextStep: 10 }, { text: 'Back', nextStep: 99 } ]); 
-                        }, 800); 
-                    }
+                    else if (step === 31) { /* ... */ }
                     else if (step === 40) { /* ... */ }
                     else if (step === 41) { /* ... */ }
                     else if (step === 42) { /* ... */ }
@@ -770,18 +767,46 @@
                          addAgentMessage("Thank you, Raj! A sales representative will reach out...");
                          setTimeout(() => {
                              addAgentMessage("Is there anything else I can help you with?");
-                             showOptions([{ text: 'Start Over', nextStep: 99 }, { text: 'No, I\'m done', nextStep: 100 }]);
+                             showOptions([{ text: 'Start Over', nextStep: 1.6 }, { text: 'No, I\'m done', nextStep: 100 }]); // Start Over goes to 1.6
                          }, 1000);
-                    }
-                    else if (step === 99) { // Maybe Later / Start Over
-                         addAgentMessage("Okay, is there anything else I can help you with?");
-                         showOptions([{ text: 'Yes, connect me', nextStep: 10 }, { text: 'No, I\'m done', nextStep: 100 }]);
                     }
                     else if (step === 100) {
                          addAgentMessage("Thank you for using the NI Solution Finder! Have a great day...");
                          chatOptions.innerHTML = `<button onclick="resetDemo()" class="chat-option bg-gray-200">Reset Demo</button>`;
                     }
                     break;
+
+                // --- NEW "Maybe Later" Flow ---
+                case 99.1: // Agent asks for email
+                    const emailAsk = "No problem. If you provide me with an email address, I can email you this content and follow up with you.";
+                    chatOptions.innerHTML = ''; // Clear options
+                    typeAgentMessage(emailAsk); // Type message, then wait for user input
+                    break;
+                
+                case 99.2: // Agent confirms email receipt
+                     const emailConfirm = "Great, thanks! Look for an email from me shortly.";
+                     // User's email was already added by handleFormSubmit
+                     typeAgentMessage(emailConfirm, () => {
+                         // Wait 1 second after typing, then ask final question
+                         setTimeout(() => { runStep(99.3); }, 1000);
+                     });
+                     break;
+
+                case 99.3: // Agent asks final question
+                    const finalAsk = "Is there anything else I can help you with?";
+                    typeAgentMessage(finalAsk, () => {
+                        // Show final buttons
+                         showOptions([{ text: 'Start Over', nextStep: 1.6 }, { text: 'No, I\'m done', nextStep: 100 }]); // Start Over goes to 1.6
+                    });
+                    break;
+
+                 // --- Old Step 99 is effectively removed ---
+                 case 99: 
+                     // This step shouldn't be reached directly anymore
+                     addAgentMessage("Is there anything else I can help you with?");
+                     showOptions([{ text: 'Start Over', nextStep: 1.6 }, { text: 'No, I\'m done', nextStep: 100 }]);
+                     break;
+
             }
         }
 
